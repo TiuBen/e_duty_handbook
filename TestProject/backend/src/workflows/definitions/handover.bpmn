@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             targetNamespace="http://bpmn.io/schema/bpmn"
+             id="Definitions_1">
+
+  <!-- 流程定义 -->
+  <process id="Process_1" isExecutable="true">
+    
+    <!-- 开始事件 -->
+    <startEvent id="StartEvent_1" name="提交申请">
+      <outgoing>Flow_1</outgoing>
+    </startEvent>
+    
+    <!-- 用户任务：审批 -->
+    <userTask id="UserTask_1" name="审批申请">
+      <incoming>Flow_1</incoming>
+      <outgoing>Flow_2</outgoing>
+    </userTask>
+    
+    <!-- 互斥网关：根据审批结果判断分支 -->
+    <exclusiveGateway id="Gateway_1" name="审批通过?">
+      <incoming>Flow_2</incoming>
+      <outgoing>Flow_Approved</outgoing>
+      <outgoing>Flow_Rejected</outgoing>
+    </exclusiveGateway>
+    
+    <!-- 通过路径：发送邮件（服务任务） -->
+    <serviceTask id="ServiceTask_1" name="发送通过邮件">
+      <incoming>Flow_Approved</incoming>
+      <outgoing>Flow_End1</outgoing>
+    </serviceTask>
+    
+    <!-- 驳回路径：发送驳回邮件（服务任务） -->
+    <serviceTask id="ServiceTask_2" name="发送驳回邮件">
+      <incoming>Flow_Rejected</incoming>
+      <outgoing>Flow_End2</outgoing>
+    </serviceTask>
+    
+    <!-- 结束事件（两个分支各自一个） -->
+    <endEvent id="EndEvent_1" name="流程结束">
+      <incoming>Flow_End1</incoming>
+    </endEvent>
+    <endEvent id="EndEvent_2" name="流程结束">
+      <incoming>Flow_End2</incoming>
+    </endEvent>
+
+    <!-- 连线定义 -->
+    <sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="UserTask_1" />
+    <sequenceFlow id="Flow_2" sourceRef="UserTask_1" targetRef="Gateway_1" />
+    
+    <!-- 条件连线：通过路径（条件表达式） -->
+    <sequenceFlow id="Flow_Approved" sourceRef="Gateway_1" targetRef="ServiceTask_1">
+      <conditionExpression xsi:type="tFormalExpression" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        ${approved == true}
+      </conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 条件连线：驳回路径 -->
+    <sequenceFlow id="Flow_Rejected" sourceRef="Gateway_1" targetRef="ServiceTask_2">
+      <conditionExpression xsi:type="tFormalExpression" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        ${approved == false}
+      </conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="Flow_End1" sourceRef="ServiceTask_1" targetRef="EndEvent_1" />
+    <sequenceFlow id="Flow_End2" sourceRef="ServiceTask_2" targetRef="EndEvent_2" />
+    
+  </process>
+
+  <!-- 图形信息（定义每个元素的位置和大小，便于编辑器渲染） -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      
+      <!-- 开始事件 -->
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="100" y="100" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      
+      <!-- 用户任务 -->
+      <bpmndi:BPMNShape id="UserTask_1_di" bpmnElement="UserTask_1">
+        <dc:Bounds x="200" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      
+      <!-- 网关 -->
+      <bpmndi:BPMNShape id="Gateway_1_di" bpmnElement="Gateway_1">
+        <dc:Bounds x="360" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      
+      <!-- 服务任务：通过 -->
+      <bpmndi:BPMNShape id="ServiceTask_1_di" bpmnElement="ServiceTask_1">
+        <dc:Bounds x="480" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      
+      <!-- 服务任务：驳回 -->
+      <bpmndi:BPMNShape id="ServiceTask_2_di" bpmnElement="ServiceTask_2">
+        <dc:Bounds x="480" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      
+      <!-- 结束事件 -->
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="640" y="50" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_2_di" bpmnElement="EndEvent_2">
+        <dc:Bounds x="640" y="150" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      
+      <!-- 连线（折线，带路径点） -->
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="136" y="118" />
+        <di:waypoint x="200" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="300" y="120" />
+        <di:waypoint x="360" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Approved_di" bpmnElement="Flow_Approved">
+        <di:waypoint x="385" y="95" />
+        <di:waypoint x="385" y="70" />
+        <di:waypoint x="480" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Rejected_di" bpmnElement="Flow_Rejected">
+        <di:waypoint x="385" y="145" />
+        <di:waypoint x="385" y="170" />
+        <di:waypoint x="480" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_End1_di" bpmnElement="Flow_End1">
+        <di:waypoint x="580" y="68" />
+        <di:waypoint x="640" y="68" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_End2_di" bpmnElement="Flow_End2">
+        <di:waypoint x="580" y="168" />
+        <di:waypoint x="640" y="168" />
+      </bpmndi:BPMNEdge>
+      
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+  
+</definitions>
