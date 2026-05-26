@@ -1,0 +1,9 @@
+.highlight-green .djs-visual> :nth-child(1) {
+  stroke: green !important;
+  stroke-width: 4px !important;
+}
+
+.highlight-yellow .djs-visual> :nth-child(1) {
+  stroke: orange !important;
+  stroke-width: 4px !important;
+}
