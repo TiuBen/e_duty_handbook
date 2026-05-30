@@ -1,5 +1,5 @@
 // lib/database/fake_database.dart
-import '../models/models.dart';
+import '../models/InfoItem.dart';
 
 class FakeDatabaseService {
   // 移除所有数据库相关的逻辑，只返回模型初始化的数据

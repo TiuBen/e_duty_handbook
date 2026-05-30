@@ -1,20 +1,16 @@
 const express = require("express");
-const cors = require("cors");
-
-const handoverRoutes = require("./routes/handover.routes");
+const bodyParser = require("body-parser");
+const userRoutes = require("./routes/userRoutes");
+const postRoutes = require("./routes/postRoutes");
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(bodyParser.json());
 
-app.use(express.json());
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
-app.use("/handover", handoverRoutes);
-
-const workflowRoutes = require("./routes/workflow.routes");
-
-app.use("/workflow", workflowRoutes);
-
-app.listen(3000, () => {
-    console.log("server running on 3000");
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

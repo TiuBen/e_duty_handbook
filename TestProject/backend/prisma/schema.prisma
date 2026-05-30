@@ -1,0 +1,42 @@
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  posts     Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model Info {
+  id        Int      @id @default(autoincrement())
+  description String
+}
+
+model Position {
+  id        Int      @id @default(autoincrement())
+  title     String
+}
+
+model Source {
+  id        Int      @id @default(autoincrement())
+  name      String
+}
+
+model ShiftItem {
+  id        Int      @id @default(autoincrement())
+  shiftDate DateTime
+}
+
+model DutyLog {
+  id        Int      @id @default(autoincrement())
+  logDate   DateTime
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}

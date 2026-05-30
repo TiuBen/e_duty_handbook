@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                  id="Definitions_ShiftHandover" 
+                  targetNamespace="http://bpmn.io/schema/bpmn" 
+                  exporter="Camunda Modeler" 
+                  exporterVersion="5.0.0">
+  
+  <bpmn:collaboration id="Collaboration_Handover">
+    <bpmn:participant id="Participant_01" name="席位交接班及业务计时流程" processRef="Process_ShiftHandover" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_ShiftHandover" name="席位交接班流程" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_01">
+      <bpmn:lane id="Lane_Staff" name="接班人员">
+        <bpmn:flowNodeRef>StartEvent_Handover</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_CheckQualifications</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_QualCheck</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_VerifySituationsABCD</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_SituationCheck</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_CheckSpecialCircumstance</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_SendToForeman</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_TimerType</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_ManualEndTimer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_Timer10Min</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_AutoEndTimer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_QualFail</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_SitFail</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_ManualSuccess</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_AutoSuccess</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Foreman" name="领班">
+        <bpmn:flowNodeRef>Activity_ForemanConfirm</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+
+    <bpmn:startEvent id="StartEvent_Handover" name="发起席位接班" />
+    
+    <bpmn:serviceTask id="Activity_CheckQualifications" name="系统资格审查 (条件1,2...)" />
+    <bpmn:exclusiveGateway id="Gateway_QualCheck" name="资格是否具备？" />
+    <bpmn:endEvent id="EndEvent_QualFail" name="交接班中止 (资格未通过)" />
+    
+    <bpmn:serviceTask id="Activity_VerifySituationsABCD" name="系统校验现场情况 (A, B, C, D 4项检查)" />
+    <bpmn:exclusiveGateway id="Gateway_SituationCheck" name="A,B,C,D是否全通过？" />
+    <bpmn:endEvent id="EndEvent_SitFail" name="交接班中止 (现场校验未全通过)" />
+    
+    <bpmn:userTask id="Activity_CheckSpecialCircumstance" name="检查并选择是否有特殊情况" />
+    <bpmn:userTask id="Activity_SendToForeman" name="完全确认并发送消息给领班" />
+    
+    <bpmn:userTask id="Activity_ForemanConfirm" name="领班审核并确认交接班" />
+    
+    <bpmn:exclusiveGateway id="Gateway_TimerType" name="是否存在特殊情况？" />
+    <bpmn:userTask id="Activity_ManualEndTimer" name="手动结束此段工作计时" />
+    <bpmn:endEvent id="EndEvent_ManualSuccess" name="流程结束 (手动完成计时)" />
+    
+    <bpmn:intermediateCatchEvent id="Event_Timer10Min" name="接班10分钟倒计时">
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="Activity_AutoEndTimer" name="系统自动结束此段计时" />
+    <bpmn:endEvent id="EndEvent_AutoSuccess" name="流程结束 (自动完成计时)" />
+
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_Handover" targetRef="Activity_CheckQualifications" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_CheckQualifications" targetRef="Gateway_QualCheck" />
+    <bpmn:sequenceFlow id="Flow_Qual_No" name="不具备" sourceRef="Gateway_QualCheck" targetRef="EndEvent_QualFail">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hasQualification == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Qual_Yes" name="具备" sourceRef="Gateway_QualCheck" targetRef="Activity_VerifySituationsABCD">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hasQualification == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Activity_VerifySituationsABCD" targetRef="Gateway_SituationCheck" />
+    <bpmn:sequenceFlow id="Flow_Sit_No" name="有未通过项" sourceRef="Gateway_SituationCheck" targetRef="EndEvent_SitFail">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sitA == false || sitB == false || sitC == false || sitD == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Sit_Yes" name="ABCD全通过 (开始时间计时)" sourceRef="Gateway_SituationCheck" targetRef="Activity_CheckSpecialCircumstance">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sitA == true &amp;&amp; sitB == true &amp;&amp; sitC == true &amp;&amp; sitD == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Activity_CheckSpecialCircumstance" targetRef="Activity_SendToForeman" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Activity_SendToForeman" targetRef="Activity_ForemanConfirm" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Activity_ForemanConfirm" targetRef="Gateway_TimerType" />
+    <bpmn:sequenceFlow id="Flow_Timer_Manual" name="是" sourceRef="Gateway_TimerType" targetRef="Activity_ManualEndTimer">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSpecialCase == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Timer_Auto" name="否" sourceRef="Gateway_TimerType" targetRef="Event_Timer10Min">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSpecialCase == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Activity_ManualEndTimer" targetRef="EndEvent_ManualSuccess" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Event_Timer10Min" targetRef="Activity_AutoEndTimer" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Activity_AutoEndTimer" targetRef="EndEvent_AutoSuccess" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_Handover">
+      
+      <bpmndi:BPMNShape id="Participant_01_di" bpmnElement="Participant_01" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1420" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Staff_di" bpmnElement="Lane_Staff" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="1390" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Foreman_di" bpmnElement="Lane_Foreman" isHorizontal="true">
+        <dc:Bounds x="190" y="340" width="1390" height="160" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="StartEvent_Handover_di" bpmnElement="StartEvent_Handover">
+        <dc:Bounds x="230" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_CheckQualifications_di" bpmnElement="Activity_CheckQualifications">
+        <dc:Bounds x="310" y="160" width="110" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_QualCheck_di" bpmnElement="Gateway_QualCheck" isMarkerVisible="true">
+        <dc:Bounds x="465" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_QualFail_di" bpmnElement="EndEvent_QualFail">
+        <dc:Bounds x="472" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNShape id="Activity_VerifySituationsABCD_di" bpmnElement="Activity_VerifySituationsABCD">
+        <dc:Bounds x="560" y="160" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SituationCheck_di" bpmnElement="Gateway_SituationCheck" isMarkerVisible="true">
+        <dc:Bounds x="725" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SitFail_di" bpmnElement="EndEvent_SitFail">
+        <dc:Bounds x="732" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNShape id="Activity_CheckSpecialCircumstance_di" bpmnElement="Activity_CheckSpecialCircumstance">
+        <dc:Bounds x="820" y="160" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_SendToForeman_di" bpmnElement="Activity_SendToForeman">
+        <dc:Bounds x="990" y="160" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_ForemanConfirm_di" bpmnElement="Activity_ForemanConfirm">
+        <dc:Bounds x="990" y="380" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TimerType_di" bpmnElement="Gateway_TimerType" isMarkerVisible="true">
+        <dc:Bounds x="1165" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_ManualEndTimer_di" bpmnElement="Activity_ManualEndTimer">
+        <dc:Bounds x="1260" y="110" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_ManualSuccess_di" bpmnElement="EndEvent_ManualSuccess">
+        <dc:Bounds x="1432" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_Timer10Min_di" bpmnElement="Event_Timer10Min">
+        <dc:Bounds x="1262" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_AutoEndTimer_di" bpmnElement="Activity_AutoEndTimer">
+        <dc:Bounds x="1340" y="220" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_AutoSuccess_di" bpmnElement="EndEvent_AutoSuccess">
+        <dc:Bounds x="1512" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1"><di:waypoint x="266" y="200" /><di:waypoint x="310" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2"><di:waypoint x="420" y="200" /><di:waypoint x="465" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Qual_No_di" bpmnElement="Flow_Qual_No"><di:waypoint x="490" y="175" /><di:waypoint x="490" y="138" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Qual_Yes_di" bpmnElement="Flow_Qual_Yes"><di:waypoint x="515" y="200" /><di:waypoint x="560" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3"><di:waypoint x="680" y="200" /><di:waypoint x="725" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Sit_No_di" bpmnElement="Flow_Sit_No"><di:waypoint x="750" y="175" /><di:waypoint x="750" y="138" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Sit_Yes_di" bpmnElement="Flow_Sit_Yes"><di:waypoint x="775" y="200" /><di:waypoint x="820" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5"><di:waypoint x="950" y="200" /><di:waypoint x="990" y="200" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6"><di:waypoint x="1055" y="240" /><di:waypoint x="1055" y="380" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7"><di:waypoint x="1120" y="420" /><di:waypoint x="1190" y="420" /><di:waypoint x="1190" y="225" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Timer_Manual_di" bpmnElement="Flow_Timer_Manual"><di:waypoint x="1190" y="175" /><di:waypoint x="1190" y="150" /><di:waypoint x="1260" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Timer_Auto_di" bpmnElement="Flow_Timer_Auto"><di:waypoint x="1190" y="225" /><di:waypoint x="1190" y="260" /><di:waypoint x="1262" y="260" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8"><di:waypoint x="1380" y="150" /><di:waypoint x="1432" y="150" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9"><di:waypoint x="1298" y="260" /><di:waypoint x="1340" y="260" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10"><di:waypoint x="1460" y="260" /><di:waypoint x="1512" y="260" /></bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

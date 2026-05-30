@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bpmn:definitions
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  id="Definitions_1"
+  targetNamespace="http://handover/process">
+
+  <bpmn:process
+    id="handoverProcess"
+    name="交接班流程"
+    isExecutable="true">
+
+    <!-- 开始 -->
+
+    <bpmn:startEvent
+      id="StartEvent" />
+
+    <!-- 申请接班 -->
+
+    <bpmn:userTask
+      id="ApplyHandover"
+      name="申请接班" />
+
+    <!-- 并行检查开始 -->
+
+    <bpmn:parallelGateway
+      id="ParallelCheckStart" />
+
+    <!-- 检查席位资格 -->
+
+    <bpmn:serviceTask
+      id="CheckQualification"
+      name="检查席位资格"
+      implementation="${environment.services.checkQualification}" />
+
+    <!-- 检查英语资格 -->
+
+    <bpmn:serviceTask
+      id="CheckEnglish"
+      name="检查英语资格"
+      implementation="${environment.services.checkEnglish}" />
+
+    <!-- 扩展规则检查 -->
+
+    <bpmn:serviceTask
+      id="CheckExtraRules"
+      name="检查扩展规则"
+      implementation="${environment.services.checkExtraRules}" />
+
+    <!-- 并行检查汇合 -->
+
+    <bpmn:parallelGateway
+      id="ParallelCheckEnd" />
+
+    <!-- 检查结果判断 -->
+
+    <bpmn:exclusiveGateway
+      id="CheckPassGateway" />
+
+    <!-- 现场确认 -->
+
+    <bpmn:userTask
+      id="SceneConfirm"
+      name="现场情况确认" />
+
+    <!-- 后台自动检查 -->
+
+    <bpmn:serviceTask
+      id="SystemCheck"
+      name="后台自动检查"
+      implementation="${environment.services.systemCheck}" />
+
+    <!-- 现场检查结果 -->
+
+    <bpmn:exclusiveGateway
+      id="ScenePassGateway" />
+
+    <!-- 是否特殊情况 -->
+
+    <bpmn:exclusiveGateway
+      id="SpecialModeGateway" />
+
+    <!-- 开始值班 -->
+
+    <bpmn:serviceTask
+      id="StartDuty"
+      name="开始值班"
+      implementation="${environment.services.startDuty}" />
+
+    <!-- 等待10分钟 -->
+
+    <bpmn:intermediateCatchEvent
+      id="Wait10Minutes"
+      name="等待10分钟">
+
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration>
+          PT10M
+        </bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+
+    </bpmn:intermediateCatchEvent>
+
+    <!-- 自动结束值班 -->
+
+    <bpmn:serviceTask
+      id="AutoFinishDuty"
+      name="自动结束值班"
+      implementation="${environment.services.autoFinishDuty}" />
+
+    <!-- 等待手动结束 -->
+
+    <bpmn:userTask
+      id="ManualFinishDuty"
+      name="等待手动结束值班" />
+
+    <!-- 手动结束 -->
+
+    <bpmn:serviceTask
+      id="FinishDuty"
+      name="手动结束值班"
+      implementation="${environment.services.finishDuty}" />
+
+    <!-- 通知领班 -->
+
+    <bpmn:serviceTask
+      id="NotifyLeader"
+      name="通知领班"
+      implementation="${environment.services.notifyLeader}" />
+
+    <!-- 拒绝结束 -->
+
+    <bpmn:endEvent
+      id="RejectEnd"
+      name="拒绝接班" />
+
+    <!-- 正常结束 -->
+
+    <bpmn:endEvent
+      id="CompleteEnd"
+      name="交接班完成" />
+
+    <!-- Sequence Flows -->
+
+    <bpmn:sequenceFlow
+      id="flow1"
+      sourceRef="StartEvent"
+      targetRef="ApplyHandover" />
+
+    <bpmn:sequenceFlow
+      id="flow2"
+      sourceRef="ApplyHandover"
+      targetRef="ParallelCheckStart" />
+
+    <!-- 并行检查 -->
+
+    <bpmn:sequenceFlow
+      id="flow3"
+      sourceRef="ParallelCheckStart"
+      targetRef="CheckQualification" />
+
+    <bpmn:sequenceFlow
+      id="flow4"
+      sourceRef="ParallelCheckStart"
+      targetRef="CheckEnglish" />
+
+    <bpmn:sequenceFlow
+      id="flow5"
+      sourceRef="ParallelCheckStart"
+      targetRef="CheckExtraRules" />
+
+    <!-- 汇合 -->
+
+    <bpmn:sequenceFlow
+      id="flow6"
+      sourceRef="CheckQualification"
+      targetRef="ParallelCheckEnd" />
+
+    <bpmn:sequenceFlow
+      id="flow7"
+      sourceRef="CheckEnglish"
+      targetRef="ParallelCheckEnd" />
+
+    <bpmn:sequenceFlow
+      id="flow8"
+      sourceRef="CheckExtraRules"
+      targetRef="ParallelCheckEnd" />
+
+    <bpmn:sequenceFlow
+      id="flow9"
+      sourceRef="ParallelCheckEnd"
+      targetRef="CheckPassGateway" />
+
+    <!-- 检查通过 -->
+
+    <bpmn:sequenceFlow
+      id="flow10"
+      sourceRef="CheckPassGateway"
+      targetRef="SceneConfirm">
+
+      <bpmn:conditionExpression
+        xsi:type="bpmn:tFormalExpression">
+        ${environment.variables.checkPass === true}
+      </bpmn:conditionExpression>
+
+    </bpmn:sequenceFlow>
+
+    <!-- 检查失败 -->
+
+    <bpmn:sequenceFlow
+      id="flow11"
+      sourceRef="CheckPassGateway"
+      targetRef="RejectEnd">
+
+      <bpmn:conditionExpression
+        xsi:type="bpmn:tFormalExpression">
+        ${environment.variables.checkPass === false}
+      </bpmn:conditionExpression>
+
+    </bpmn:sequenceFlow>
+
+    <!-- 现场确认 -->
+
+    <bpmn:sequenceFlow
+      id="flow12"
+      sourceRef="SceneConfirm"
+      targetRef="SystemCheck" />
+
+    <bpmn:sequenceFlow
+      id="flow13"
+      sourceRef="SystemCheck"
+      targetRef="ScenePassGateway" />
+
+    <!-- 现场正常 -->
+
+    <bpmn:sequenceFlow
+      id="flow14"
+      sourceRef="ScenePassGateway"
+      targetRef="SpecialModeGateway">
+
+      <bpmn:conditionExpression
+        xsi:type="bpmn:tFormalExpression">
+        ${environment.variables.scenePass === true}
+      </bpmn:conditionExpression>
+
+    </bpmn:sequenceFlow>
+
+    <!-- 现场异常 -->
+
+    <bpmn:sequenceFlow
+      id="flow15"
+      sourceRef="ScenePassGateway"
+      targetRef="RejectEnd">
+
+      <bpmn:conditionExpression
+        xsi:type="bpmn:tFormalExpression">
+        ${environment.variables.scenePass === false}
+      </bpmn:conditionExpression>
+
+    </bpmn:sequenceFlow>
+
+    <!-- 普通模式 -->
+
+    <bpmn:sequenceFlow
+      id="flow16"
+      sourceRef="SpecialModeGateway"
+      targetRef="StartDuty">
+
+      <bpmn:conditionExpression
+        xsi:type="bpmn:tFormalExpression">
+        ${environment.variables.specialMode === false}
+      </bpmn:conditionExpression>
+
+    </bpmn:sequenceFlow>
+
+    <!-- 特殊模式 -->
+
+    <bpmn:sequenceFlow
+      id="flow17"
+      sourceRef="SpecialModeGateway"
+      targetRef="ManualFinishDuty">
+
+      <bpmn:conditionExpression
+        xsi:type="bpmn:tFormalExpression">
+        ${environment.variables.specialMode === true}
+      </bpmn:conditionExpression>
+
+    </bpmn:sequenceFlow>
+
+    <!-- 普通模式开始值班 -->
+
+    <bpmn:sequenceFlow
+      id="flow18"
+      sourceRef="StartDuty"
+      targetRef="Wait10Minutes" />
+
+    <bpmn:sequenceFlow
+      id="flow19"
+      sourceRef="Wait10Minutes"
+      targetRef="AutoFinishDuty" />
+
+    <bpmn:sequenceFlow
+      id="flow20"
+      sourceRef="AutoFinishDuty"
+      targetRef="NotifyLeader" />
+
+    <!-- 特殊模式 -->
+
+    <bpmn:sequenceFlow
+      id="flow21"
+      sourceRef="ManualFinishDuty"
+      targetRef="FinishDuty" />
+
+    <bpmn:sequenceFlow
+      id="flow22"
+      sourceRef="FinishDuty"
+      targetRef="NotifyLeader" />
+
+    <!-- 通知领班 -->
+
+    <bpmn:sequenceFlow
+      id="flow23"
+      sourceRef="NotifyLeader"
+      targetRef="CompleteEnd" />
+
+  </bpmn:process>
+
+</bpmn:definitions>
