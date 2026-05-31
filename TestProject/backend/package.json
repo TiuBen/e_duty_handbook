@@ -3,20 +3,27 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app.js",
-    "build": "prisma generate"
+    "generate": "pnpm prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "bpmn-engine": "^25.0.1",
     "bpmn-moddle": "^10.0.0",
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "@prisma/client": "^3.0.0"
+    "pg": "^8.21.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.8.0"
   }
 }

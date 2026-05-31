@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000"; // 后端服务地址
+const API_BASE_URL = "http://localhost:3000/api"; // 后端服务地址
 
 // 获取所有用户
 export const getUsers = async () => {
