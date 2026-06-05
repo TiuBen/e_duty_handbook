@@ -1,4 +1,4 @@
-import request from "../api/axios";
+import request from "./axios";
 
 export const positionService = {
     getAll: () => request.get("/positions"),

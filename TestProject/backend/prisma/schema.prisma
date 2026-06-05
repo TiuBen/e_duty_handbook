@@ -12,21 +12,36 @@ model User {
   username      String
   phonenumber     String   @unique
   dutyLogs  DutyLog[]
+  createdInfos   Info[]  @relation("InfoCreatorUser")
 }
 
 model Info {
   id        Int      @id @default(autoincrement())
   description String
+  createdAt DateTime @default(now())
+  startTime  DateTime 
+  endTime   DateTime
+  validRule   String @db.Text
+  sourceId Int
+  infoSource Source  @relation(fields: [sourceId], references: [id])
+  creatorUserId Int?
+  creatorPositionId Int?
+  creatorUser User? @relation("InfoCreatorUser",fields:[creatorUserId], references:[id] )
+  creatorPosition Position? @relation( "InfoCreatorPosition", fields:[creatorPositionId], references:[id])
+  categoryId Int?
+  category Category? @relation("InfoCategory",fields: [categoryId], references: [id])
 }
 
 model Position {
   id        Int      @id @default(autoincrement())
   title     String
+  createdInfos  Info[] @relation("InfoCreatorPosition")
 }
 
 model Source {
   id        Int      @id @default(autoincrement())
   name      String
+  infos Info[]
 }
 
 model ShiftItem {
@@ -40,3 +55,12 @@ model DutyLog {
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
 }
+
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  infos Info[]  @relation("InfoCategory")
+}
+
+

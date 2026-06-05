@@ -1,3 +1,4 @@
+import PageHeader from "../common/PageHeader";
 import Sidebar from "./Sidebar";
 
 export default function AppLayout({ children }) {
@@ -5,7 +6,7 @@ export default function AppLayout({ children }) {
         <div className="flex h-screen">
             <Sidebar />
 
-            <main className="flex-1 p-6 bg-gray-50 overflow-auto">{children}</main>
+            <main className="flex-1 p-6 bg-gray-50 overflow-auto flex-col">{children}</main>
         </div>
     );
 }

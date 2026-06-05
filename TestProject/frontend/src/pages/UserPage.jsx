@@ -11,10 +11,12 @@ export default function UserPage() {
                 {
                     name: "username",
                     label: "用户名",
+                    type: "text",
                 },
                 {
                     name: "phonenumber",
                     label: "手机号",
+                    type: "tel",
                 },
             ]}
         />

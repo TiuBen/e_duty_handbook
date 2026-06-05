@@ -5,16 +5,13 @@ export const infoService = {
         return prisma.info.create({
             data: {
                 ...data,
-                sourceId: data.sourceId ? Number(data.sourceId) : null,
-                creatorId: data.creatorId ? Number(data.creatorId) : null,
-                creatorPositionId: data.creatorPositionId ? Number(data.creatorPositionId) : null,
             },
         });
     },
 
     findAll: () =>
         prisma.info.findMany({
-            include: { source: true, creator: true, creatorPosition: true },
+            include: { infoSource: true, creatorUser: true, creatorPosition: true },
         }),
 
     findOne: (id) =>

@@ -3,6 +3,25 @@ import { Button, Card, Table } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
 import GenericCrudDialog from "./GenericCrudDialog";
+import PageHeader from "../common/PageHeader";
+
+const renderCell = (field, row) => {
+    if (field.tableRender) {
+        return field.tableRender(row);
+    }
+
+    const value = row[field.name];
+
+    if (field.type === "date" && value) {
+        return new Date(value).toLocaleDateString();
+    }
+
+    if (field.type === "datetime" && value) {
+        return new Date(value).toLocaleString();
+    }
+
+    return value ?? "-";
+};
 
 export default function GenericCrudPage({ title, service, fields }) {
     const [rows, setRows] = useState([]);
@@ -40,10 +59,20 @@ export default function GenericCrudPage({ title, service, fields }) {
     };
 
     const submit = async (formData) => {
+        const data = {
+            ...formData,
+        };
+
+        fields.forEach((field) => {
+            if (field.type === "datetime" && data[field.name]) {
+                data[field.name] = new Date(data[field.name]).toISOString();
+            }
+        });
+
         if (editing) {
-            await service.update(editing.id, formData);
+            await service.update(editing.id, data);
         } else {
-            await service.create(formData);
+            await service.create(data);
         }
 
         setOpen(false);
@@ -54,8 +83,7 @@ export default function GenericCrudPage({ title, service, fields }) {
     return (
         <>
             <div className="flex justify-between mb-4">
-                <h1 className="text-2xl font-bold">{title}</h1>
-
+                <PageHeader />
                 <Button onClick={createItem}>新增</Button>
             </div>
 
@@ -78,8 +106,12 @@ export default function GenericCrudPage({ title, service, fields }) {
                             <Table.Row key={row.id}>
                                 <Table.Cell>{row.id}</Table.Cell>
 
-                                {fields.map((field) => (
+                                {/* {fields.map((field) => (
                                     <Table.Cell key={field.name}>{row[field.name]}</Table.Cell>
+                                ))} */}
+
+                                {fields.map((field) => (
+                                    <Table.Cell key={field.name}>{renderCell(field, row)}</Table.Cell>
                                 ))}
 
                                 <Table.Cell>

@@ -10,7 +10,7 @@ export default function SourcePage() {
             fields={[
                 {
                     name: "name",
-                    label: "来源名称",
+                    label: "来源部门",
                     type: "text",
                 },
             ]}
