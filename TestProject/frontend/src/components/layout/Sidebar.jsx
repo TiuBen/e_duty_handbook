@@ -3,7 +3,7 @@ import menus from "../../api/navMenus";
 
 export default function Sidebar() {
     return (
-        <div className="w-60 border-r bg-white">
+        <div className="w-40 border-r bg-white">
             <div className="p-4 font-bold text-xl">E-Duty</div>
 
             <nav className="flex flex-col">

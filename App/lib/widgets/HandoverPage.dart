@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../providers/handover_provider.dart';
+import '../core/providers/handover_provider.dart';
 
 class HandoverPage extends HookConsumerWidget {
   const HandoverPage({super.key});
@@ -13,21 +13,18 @@ class HandoverPage extends HookConsumerWidget {
     return asyncValue.when(
       loading: () => const Center(child: CircularProgressIndicator()),
 
-      error: (err, stack) => Center(
-        child: Text("错误: $err"),
-      ),
+      error: (err, stack) => Center(child: Text("错误: $err")),
 
       data: (list) {
         return Container(
           width: 300,
           decoration: BoxDecoration(border: Border.all()),
           padding: const EdgeInsets.all(8),
-          child:  Text(
+          child: Text(
             list.toString(), // ✅ 直接转字符串
           ),
         );
-
-      }
+      },
     );
   }
 }

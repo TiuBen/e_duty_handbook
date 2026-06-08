@@ -115,8 +115,8 @@ export default function GenericCrudPage({ title, service, fields }) {
                                 ))}
 
                                 <Table.Cell>
-                                    <div className="flex gap-2">
-                                        <Button size="1" onClick={() => editItem(row)}>
+                                    <div className="flex flex-col gap-2 text-nowrap">
+                                        <Button size="1" onClick={() => editItem(row)} className="text-center flex ">
                                             编辑
                                         </Button>
 

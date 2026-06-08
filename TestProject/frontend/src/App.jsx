@@ -8,6 +8,7 @@ import PositionPage from "./pages/PositionPage";
 import ShiftItemPage from "./pages/ShiftItemPage";
 import SourcePage from "./pages/SourcePage";
 import DutyLogPage from "./pages/DutyLogPage";
+import CategoryPage from "./pages/CategoryPage";
 
 export default function App() {
     return (
@@ -22,6 +23,7 @@ export default function App() {
                     <Route path="/sources" element={<SourcePage />} />
                     <Route path="/shift-items" element={<ShiftItemPage />} />
                     <Route path="/duty-logs" element={<DutyLogPage />} />
+                    <Route path="/categories" element={<CategoryPage />} />
                 </Routes>
             </AppLayout>
         </BrowserRouter>

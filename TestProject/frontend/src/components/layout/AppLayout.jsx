@@ -1,4 +1,3 @@
-import PageHeader from "../common/PageHeader";
 import Sidebar from "./Sidebar";
 
 export default function AppLayout({ children }) {

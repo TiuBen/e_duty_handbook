@@ -4,6 +4,7 @@ import { infoService } from "../services/infoService";
 import { sourceService } from "../services/sourceService";
 import { userService } from "../services/userService";
 import { positionService } from "../services/positionService";
+import { categoriesService } from "../services/categoryService";
 
 export default function InfoPage() {
     return (
@@ -30,6 +31,17 @@ export default function InfoPage() {
                     name: "validRule",
                     label: "NOTAM生效规则",
                     type: "textarea",
+                },
+                {
+                    name: "categoryId",
+                    label: "信息分类",
+                    type: "select",
+                    service: categoriesService,
+                    valueField: "id",
+
+                    labelField: "name",
+
+                    tableRender: (row) => row.category?.name,
                 },
                 {
                     name: "sourceId",

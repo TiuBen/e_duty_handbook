@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../domain/handover_config.dart';
 import '../domain/handover_status.dart';
-import '../models/InfoItem.dart';
+import '../models/info_item.dart';
 
 class HandoverItem extends StatefulWidget {
   final InfoItem infoItem; // 信息条目

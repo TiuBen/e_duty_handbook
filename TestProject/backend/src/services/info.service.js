@@ -11,7 +11,7 @@ export const infoService = {
 
     findAll: () =>
         prisma.info.findMany({
-            include: { infoSource: true, creatorUser: true, creatorPosition: true },
+            include: { infoSource: true, creatorUser: true, creatorPosition: true, category: true },
         }),
 
     findOne: (id) =>
