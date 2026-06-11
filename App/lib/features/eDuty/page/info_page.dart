@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/providers/info_provider.dart';
-import '../../widgets//info_category.dart';
-import '../../models/info.dart';
+import '../provider/info_provider.dart';
+import '../../../shared/widgets/info_category.dart';
+import '../../../models/info.dart';
 
 class InfoPage extends ConsumerWidget {
   const InfoPage({super.key});

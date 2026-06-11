@@ -1,6 +1,6 @@
 // lib/widgets/item_tile.dart
 import 'package:flutter/material.dart';
-import '../models/info_item.dart';
+import '../../models/info_item.dart';
 
 class ItemTile extends StatefulWidget {
   final Item item;

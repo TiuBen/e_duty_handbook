@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/api/api.dart';
-import '../../../models/info.dart';
+import '../../../../core/api/api.dart';
+import '../../../../models/info.dart';
 
 final infoProvider = AsyncNotifierProvider<InfoNotifier, List<Info>>(
   InfoNotifier.new,

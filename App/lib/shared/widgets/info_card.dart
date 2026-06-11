@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/info.dart';
+import '../../models/info.dart';
 
 class InfoCard extends StatelessWidget {
   final Info info;

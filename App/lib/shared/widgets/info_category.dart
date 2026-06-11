@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/info.dart';
-import './info_card.dart';
+import '../../models/info.dart';
+import 'info_card.dart';
 
 class InfoCategory extends StatelessWidget {
   final String title;
