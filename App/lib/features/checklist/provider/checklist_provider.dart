@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api.dart';
-import '../../../models/Position.dart';
+import '../../../models/position.dart';
 
 final checklistProvider =
     AsyncNotifierProvider<ChecklistNotifier, List<Position>>(

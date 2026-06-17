@@ -1,6 +1,6 @@
-import 'Source.dart';
-import 'User.dart';
-import 'Position.dart';
+import 'source.dart';
+import 'user.dart';
+import 'position.dart';
 import 'Category.dart';
 
 class Info {
