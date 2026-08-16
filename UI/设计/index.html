@@ -1,0 +1,1040 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>管制室席位交接班 · iPad Pro 竖屏</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<style>
+  /* ========= 设计令牌 ========= */
+  :root{
+    --bg:#F2F4F7;
+    --surface:#FFFFFF;
+    --surface-alt:#F7F8FA;
+    --surface-2:#F0F2F5;
+    --border:#E5E7EB;
+    --border-strong:#D1D5DB;
+    --text:#0F172A;
+    --text-2:#334155;
+    --text-3:#64748B;
+    --text-4:#94A3B8;
+    --brand:#2563EB;
+    --brand-deep:#1D4ED8;
+    --brand-soft:#DBEAFE;
+    --success:#16A34A;
+    --success-soft:#DCFCE7;
+    --warning:#F59E0B;
+    --warning-soft:#FEF3C7;
+    --danger:#DC2626;
+    --danger-soft:#FEE2E2;
+    --orange-icon:#FB923C;
+    --orange-deep:#EA580C;
+    --radius-card:16px;
+    --radius-item:12px;
+    --radius-pill:999px;
+    --radius-sheet:24px;
+    --shadow-card:0 1px 2px rgba(15,23,42,.04), 0 0 0 1px rgba(15,23,42,.04);
+    --shadow-card-hover:0 6px 18px rgba(15,23,42,.08), 0 0 0 1px rgba(15,23,42,.06);
+    --shadow-float:0 8px 24px rgba(15,23,42,.18), 0 0 0 1px rgba(15,23,42,.06);
+    --shadow-modal:0 30px 60px rgba(15,23,42,.25), 0 0 0 1px rgba(15,23,42,.04);
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  html, body{ margin:0; padding:0; height:100%; }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--text);
+    background:radial-gradient(circle at 20% 10%, #1E293B 0%, #0F172A 60%, #020617 100%);
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ========= iPad Pro 竖屏外框 ========= */
+  .ipad{
+    width: min(820px, 96vw);
+    aspect-ratio: 3 / 4;
+    max-height: 94vh;
+    background:var(--bg);
+    border-radius:36px;
+    box-shadow:
+      0 0 0 11px #1F2937,
+      0 0 0 13px #111827,
+      0 40px 80px rgba(0,0,0,.55);
+    position:relative;
+    overflow:hidden;
+    background-image:
+      linear-gradient(rgba(15,23,42,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15,23,42,.04) 1px, transparent 1px),
+      linear-gradient(180deg, var(--bg), var(--bg));
+    background-size:16px 16px, 16px 16px, 100% 100%;
+  }
+  /* 前置摄像头 + 顶部传感器 */
+  .ipad::before{
+    content:""; position:absolute; top:8px; left:50%; transform:translateX(-50%);
+    width:5px; height:5px; border-radius:999px; background:#0F172A; z-index:30;
+  }
+  /* Face ID 圆角提示 */
+  .ipad::after{
+    content:""; position:absolute; top:6px; left:50%; transform:translateX(-50%);
+    width:90px; height:22px; border-radius:999px;
+    border:1px solid rgba(15,23,42,.06); background:transparent; z-index:29;
+  }
+
+  /* ========= iOS 状态栏 ========= */
+  .statusbar{
+    height:28px; padding:0 28px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:14px; font-weight:600; color:var(--text);
+    position:relative; z-index:20;
+  }
+  .statusbar .right{ display:flex; align-items:center; gap:6px; }
+  .statusbar svg{ width:16px; height:11px; }
+  .battery{ width:24px; height:11px; border:1px solid var(--text); border-radius:3px; padding:1px; position:relative; }
+  .battery::after{ content:""; position:absolute; right:-3px; top:3px; width:2px; height:5px; background:var(--text); border-radius:0 2px 2px 0;}
+  .battery .lvl{ width:80%; height:100%; background:var(--text); border-radius:1px; }
+
+  /* ========= App 容器 ========= */
+  .app{ position:absolute; inset:28px 0 0 0; display:flex; flex-direction:column; }
+  .view{ flex:1; display:none; flex-direction:column; min-height:0; }
+  .view.active{ display:flex; }
+
+  /* ========= 视图 1：席位 ========= */
+  .v1-body{
+    flex:1; overflow-y:auto;
+    padding:16px 24px 120px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:14px;
+    align-content: start;
+  }
+  .seat-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-card);
+    padding:22px 14px;
+    box-shadow:var(--shadow-card);
+    cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+    transition: transform .15s ease, box-shadow .2s ease, border-color .2s;
+    position:relative;
+  }
+  .seat-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-card-hover); border-color:var(--brand);}
+  .seat-card:active{ transform:translateY(0);}
+  .seat-card.selected{ border-color:var(--brand); box-shadow:0 0 0 2px var(--brand-soft), var(--shadow-card);}
+  .seat-card .seat-ic{
+    width:52px; height:52px; border-radius:16px;
+    background:linear-gradient(135deg, var(--brand-soft), var(--brand));
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; font-weight:700;
+    box-shadow:0 4px 10px rgba(37,99,235,.25);
+  }
+  .seat-card.selected .seat-ic{ background:linear-gradient(135deg, var(--brand), var(--brand-deep));}
+  .seat-card .seat-label{
+    font-size:16px; font-weight:700; color:var(--text);
+  }
+  .seat-card .seat-role{
+    font-size:11px; color:var(--text-3); margin-top:-8px;
+  }
+
+  /* ========= 视图 2：检查单 ========= */
+  .v2-head{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 20px;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+  }
+  .v2-head .seat-name{ font-size:17px; font-weight:700;}
+  .v2-head .seat-name .role{ color:var(--brand);}
+  .v2-head .seat-meta{ font-size:12px; color:var(--text-3); margin-top:2px;}
+  .v2-progress{ margin-left:auto; display:flex; align-items:center; gap:8px;}
+  .v2-progress .bar{ width:100px; height:6px; background:var(--surface-alt); border-radius:999px; overflow:hidden; border:1px solid var(--border);}
+  .v2-progress .fill{ height:100%; background:linear-gradient(90deg, var(--success), #22C55E); width:62%;}
+  .v2-progress .pct{ font-size:12px; color:var(--text-2); font-weight:600;}
+
+  .v2-body{
+    flex:1; overflow-y:auto;
+    padding:14px 20px 120px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .group{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-card);
+    padding:14px;
+    box-shadow:var(--shadow-card);
+  }
+  .group-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .group-head .label{ font-size:12px; color:var(--text-3); font-weight:500; display:flex; align-items:center; gap:6px;}
+  .group-head .label .num{
+    display:inline-flex; width:18px; height:18px; border-radius:6px;
+    background:var(--brand-soft); color:var(--brand);
+    align-items:center; justify-content:center; font-size:11px; font-weight:700;
+  }
+  .group-head .chip{ font-size:11px; padding:2px 8px; border-radius:var(--radius-pill); background:var(--success-soft); color:var(--success); border:1px solid #86EFAC;}
+  .group-head .chip.warn{ background:var(--warning-soft); color:#B45309; border-color:#FCD34D;}
+  .item{
+    position:relative; border:1px solid var(--border);
+    border-radius:var(--radius-item); padding:14px 90px 14px 14px;
+    margin-bottom:8px; background:var(--surface); cursor:pointer;
+    transition: border-color .15s, background .15s, transform .1s;
+  }
+  .item:last-child{ margin-bottom:0;}
+  .item:hover{ border-color:var(--brand);}
+  .item:active{ transform:scale(.995);}
+  .item.is-confirmed{ border-color:#BBF7D0; background:linear-gradient(180deg, #F0FDF4, #FFFFFF 80%);}
+  .item.is-pending{ border-color:#FCD9A8;}
+  .item .title{ font-size:16px; font-weight:700; display:flex; align-items:center; gap:8px;}
+  .item .img-attach{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:20px; border:1.5px solid var(--orange-icon); border-radius:4px; color:var(--orange-deep); background:#FFF7ED;}
+  .item .img-attach svg{ width:14px; height:11px;}
+  .item .desc{ font-size:12px; color:var(--text-3); margin-top:4px; line-height:1.5;}
+  .item .badge{ position:absolute; top:50%; right:14px; transform:translateY(-50%); font-size:11px; font-weight:600; padding:4px 10px; border-radius:var(--radius-pill); white-space:nowrap;}
+  .item .badge.pending{ background:var(--danger-soft); color:var(--danger); border:1px solid #FCA5A5;}
+  .item .badge.confirmed{ background:var(--success-soft); color:var(--success); border:1px solid #86EFAC;}
+
+  /* ========= 检查单模板列表（多列小方框网格） ========= */
+  .tpl-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:8px;
+  }
+  .tpl-cell{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    border:1px solid var(--border); border-radius:12px;
+    padding:14px 8px;
+    background:var(--surface);
+    cursor:pointer;
+    min-height:88px;
+    text-align:center;
+    transition: border-color .15s, background .15s, transform .1s;
+  }
+  .tpl-cell:hover{ border-color:var(--brand); background:var(--surface-alt);}
+  .tpl-cell:active{ transform:scale(.97);}
+  .tpl-cell .tpl-ic{
+    width:34px; height:34px; border-radius:10px;
+    background:var(--brand-soft); color:var(--brand);
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:600;
+    flex-shrink:0;
+  }
+  .tpl-cell .tpl-title{
+    font-size:12px; font-weight:600; color:var(--text);
+    line-height:1.35;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+  }
+  .tpl-cell .tpl-meta{
+    font-size:10px; color:var(--text-3);
+  }
+
+  /* ========= 视图 3：交接班（竖排标题 + 单选/多选 + 语音确认） ========= */
+  .hg{
+    display:flex;
+    flex-shrink:0;   /* 禁止被父级 flex 压缩，高度由内容决定 */
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-card);
+    overflow:hidden;
+    box-shadow:var(--shadow-card);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .hg.error{ border-color:#FCD34D; box-shadow:0 0 0 1.5px #FCD34D, var(--shadow-card);}
+  .hg-body{ flex:1; display:inline-flex; padding:14px 16px 12px; min-width:0;}
+  /* 竖排标题：最左，无底色，正常文字颜色；从左到右(lr)，高度由内容撑开（不写死） */
+  .hg-title{
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    background:transparent;
+    color:var(--text-2);
+    padding:18px 8px;
+    font-size:16px; font-weight:600;
+    letter-spacing:4px;
+    min-width:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-right:1px dashed var(--border);
+    flex-shrink:0;
+  }
+  /* 错误只作用于小项，标题保持正常颜色 */
+  /* 选项行 */
+  .opt-row{ margin-bottom:12px;}
+  .opt-row:last-child{ margin-bottom:0;}
+  .opt-label{
+    font-size:11px; color:var(--text-3);
+    margin-bottom:6px; display:flex; align-items:center; gap:6px;
+  }
+  .opt-label .type{
+    font-size:10px; padding:1px 6px; border-radius:4px;
+    background:var(--surface-alt); color:var(--text-4);
+  }
+  .opt-choices{ display:flex; flex-wrap:wrap; gap:6px;}
+  .chip{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:6px 12px; border-radius:999px;
+    border:1px solid var(--border); background:var(--surface-alt);
+    font-size:13px; color:var(--text-2); cursor:pointer;
+    transition: background .15s, color .15s, border-color .15s, transform .1s;
+    user-select:none;
+  }
+  .chip:hover{ border-color:var(--brand);}
+  .chip:active{ transform:scale(.96);}
+  .chip.selected{
+    background:var(--brand-soft); color:var(--brand);
+    border-color:var(--brand);
+  }
+  /* 错误状态下文字变琥珀色 + 缓慢闪烁 */
+  .hg.error .chip,
+  .hg.error .opt-label,
+  .hg.error .voice-sentence{
+    color:#B45309;
+    animation: amberBlink 1.6s ease-in-out infinite;
+  }
+  .hg.error .chip.selected{
+    background:#FEF3C7; border-color:#F59E0B; color:#B45309;
+  }
+  .hg.error .voice-sentence{ background:#FFFBEB; border-color:#FDE68A;}
+  @keyframes amberBlink{
+    0%,100%{ opacity:1;}
+    50%{ opacity:.4;}
+  }
+  /* 语音确认语句：蓝色小字 */
+  .voice-sentence{
+    margin-top:12px;
+    padding:10px 12px;
+    background:#F5F9FF;
+    border:1px solid #D6E6FF;
+    border-radius:10px;
+    font-size:12px;
+    color:var(--brand);
+    line-height:1.5;
+    cursor:pointer;
+    user-select:none;
+    display:flex; align-items:center; gap:10px;
+    transition: background .15s, transform .1s;
+  }
+  .voice-sentence:hover{ background:#EBF2FF;}
+  .voice-sentence:active{ transform:scale(.995);}
+  .voice-sentence .vs-text{ flex:1;}
+  .voice-sentence .vs-hint{
+    font-size:10px; color:var(--text-4);
+    border-left:1px solid #D6E6FF; padding-left:8px;
+    white-space:nowrap;
+  }
+  .voice-sentence.recording{
+    background:#EBF2FF;
+    animation: recPulse 1.2s ease-in-out infinite;
+  }
+  .voice-sentence.recording .vs-hint{ color:var(--brand); border-color:var(--brand);}
+  @keyframes recPulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(37,99,235,.3);}
+    50%{ box-shadow:0 0 0 8px rgba(37,99,235,0);}
+  }
+  .voice-sentence.ok{ background:#F0FDF4; border-color:#BBF7D0; color:#15803D;}
+  .voice-sentence.ok .vs-hint{ color:#16A34A; border-color:#BBF7D0;}
+  .voice-sentence.fail{ background:#FEF2F2; border-color:#FECACA; color:#B91C1C;}
+  .voice-sentence.fail .vs-hint{ color:#DC2626; border-color:#FECACA;}
+
+  /* ========= 悬浮框组（贴边吸附的标签条） ========= */
+  .floats{
+    position:absolute;
+    right:0; top:50%;
+    transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:6px;
+    z-index:40;
+    cursor:grab;
+    user-select:none;
+    transition: right .2s, left .2s, top .2s, bottom .2s, transform .2s;
+  }
+  .floats.dragging{ cursor:grabbing; transition:none; }
+  .floats.snap-right  { right:0;  left:auto;  top:50%;    bottom:auto; transform:translateY(-50%); flex-direction:column; }
+  .floats.snap-left   { left:0;   right:auto; top:50%;    bottom:auto; transform:translateY(-50%); flex-direction:column; }
+  .floats.snap-top    { top:0;    bottom:auto; left:50%;  right:auto;  transform:translateX(-50%); flex-direction:row; }
+  .floats.snap-bottom { bottom:0; top:auto;    left:50%;  right:auto;  transform:translateX(-50%); flex-direction:row; }
+
+  .float-btn{
+    width:54px; height:48px;
+    padding:0; border:0; cursor:pointer;
+    background:rgba(255,255,255,.88);
+    color:var(--text-2);
+    backdrop-filter: blur(8px);
+    border-radius:24px 0 0 24px;
+    box-shadow:-3px 3px 12px rgba(15,23,42,.15);
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:600;
+    transition: transform .15s ease, box-shadow .2s ease, background .2s, color .2s, border-radius .2s;
+    position:relative;
+  }
+  /* 各吸附方向对应的圆角方向 */
+  .floats.snap-right  .float-btn{ border-radius:24px 0 0 24px; box-shadow:-3px 3px 12px rgba(15,23,42,.15);}
+  .floats.snap-left   .float-btn{ border-radius:0 24px 24px 0; box-shadow:3px 3px 12px rgba(15,23,42,.15);}
+  .floats.snap-top    .float-btn{ border-radius:24px 24px 0 0; box-shadow:0 3px 12px rgba(15,23,42,.15);}
+  .floats.snap-bottom .float-btn{ border-radius:0 0 24px 24px; box-shadow:0 -3px 12px rgba(15,23,42,.15);}
+
+  .float-btn:hover{
+    background:#fff; color:var(--brand);
+    transform:translateX(-3px); box-shadow:-5px 5px 16px rgba(15,23,42,.2);
+  }
+  .floats.snap-left   .float-btn:hover{ transform:translateX(3px); box-shadow:5px 5px 16px rgba(15,23,42,.2);}
+  .floats.snap-top    .float-btn:hover{ transform:translateY(-3px); box-shadow:0 5px 16px rgba(15,23,42,.2);}
+  .floats.snap-bottom .float-btn:hover{ transform:translateY(3px); box-shadow:0 -5px 16px rgba(15,23,42,.2);}
+
+  .float-btn:active{ transform:scale(.95);}
+  .float-btn .lbl{
+    font-size:12px; font-weight:600; letter-spacing:.5px;
+  }
+
+  /* ========= 页面水印（淡色斜体标识当前页面，在最上层 + 无交互） ========= */
+  .watermark{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%) rotate(-18deg);
+    font-size:96px; font-weight:800;
+    color:rgba(15,23,42,.06);
+    letter-spacing:12px;
+    pointer-events:none; /* 无交互，点击穿透 */
+    user-select:none;
+    z-index:60; /* 在最前面（悬浮框 40 / 弹窗 70 之下，弹窗可盖住） */
+    white-space:nowrap;
+  }
+
+  /* view 内容不显式设 z-index，默认 0，水印在内容上层 */
+
+  /* ========= Home Indicator ========= */
+  .home-indicator{
+    position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+    width:120px; height:4px; border-radius:999px; background:var(--text-3);
+    opacity:.45; z-index:30;
+  }
+
+  /* ========= 单项确认弹窗 ========= */
+  .modal-mask{
+    position:absolute; inset:0; background:rgba(15,23,42,.5);
+    display:none; align-items:center; justify-content:center;
+    z-index:70; padding:24px; backdrop-filter: blur(2px);
+  }
+  .modal-mask.show{ display:flex; animation: fade .2s ease;}
+  @keyframes fade{ from{ opacity:0;} to{ opacity:1;}}
+  .modal{
+    width:min(560px, 96%); max-height:90%;
+    background:var(--surface); border-radius:var(--radius-sheet);
+    box-shadow:var(--shadow-modal); overflow:hidden;
+    display:flex; flex-direction:column;
+    animation: pop .25s cubic-bezier(.18,.9,.32,1.28);
+  }
+  @keyframes pop{ from{ transform:scale(.92); opacity:0;} to{ transform:scale(1); opacity:1;}}
+  .modal-head{ display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--border);}
+  .modal-head .title{ font-size:18px; font-weight:700; flex:1; display:flex; align-items:center; gap:8px;}
+  .modal-head .close{ width:30px; height:30px; border-radius:8px; border:1px solid var(--border-strong); background:#fff; color:var(--text-2); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;}
+  .modal-body{ padding:14px 18px; overflow-y:auto;}
+  .modal-body .preview{ background:var(--surface-alt); border:1px solid var(--border); border-radius:12px; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; color:var(--orange-icon); margin-bottom:12px;}
+  .modal-body .preview svg{ width:48px; height:36px;}
+  .modal-body .row{ display:flex; gap:12px; padding:8px 0; border-bottom:1px dashed var(--border);}
+  .modal-body .row .k{ flex:0 0 70px; font-size:12px; color:var(--text-3); padding-top:2px;}
+  .modal-body .row .v{ flex:1; font-size:13px; color:var(--text); line-height:1.5;}
+  .modal-body .note{ width:100%; min-height:60px; border:1px solid var(--border); border-radius:10px; padding:8px 10px; font:inherit; font-size:13px; resize:vertical; margin-top:6px;}
+  .modal-body .note:focus{ outline:2px solid var(--brand); border-color:var(--brand);}
+  .modal-body-confirm{ padding:18px 20px;}
+  .modal-sm{ width:min(420px, 92%);}
+  .confirm-seat-card{
+    background:var(--surface-alt);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .confirm-seat-card::before{
+    content:"席位";
+    font-size:11px; color:var(--text-3);
+    background:var(--brand-soft); color:var(--brand);
+    padding:2px 8px; border-radius:999px;
+    margin-right:4px;
+  }
+  .confirm-seat-name{
+    font-size:20px; font-weight:700; color:var(--text);
+  }
+  .confirm-seat-role{
+    font-size:12px; color:var(--text-3); margin-top:2px;
+  }
+  .modal-foot{ display:flex; justify-content:flex-end; gap:8px; padding:12px 18px; border-top:1px solid var(--border);}
+  .btn{ border:0; cursor:pointer; padding:8px 16px; border-radius:var(--radius-pill); font-size:13px; font-weight:500;}
+  .btn-ghost{ background:transparent; color:var(--text-2);}
+  .btn-ghost:hover{ background:var(--surface-alt);}
+  .btn-success{ background:var(--success); color:#fff;}
+
+  .badge-inline{ font-size:11px; font-weight:600; padding:4px 10px; border-radius:var(--radius-pill); background:var(--success-soft); color:var(--success); border:1px solid #86EFAC;}
+  .badge-inline.pending{ background:var(--danger-soft); color:var(--danger); border-color:#FCA5A5;}
+
+  /* 滚动条 */
+  ::-webkit-scrollbar{ width:6px;}
+  ::-webkit-scrollbar-thumb{ background:var(--border-strong); border-radius:999px;}
+</style>
+</head>
+<body>
+
+<div class="ipad" id="ipad">
+
+  <!-- iOS 状态栏 -->
+  <div class="statusbar">
+    <span id="clock">19:49</span>
+    <span class="right">
+      <svg viewBox="0 0 18 12" fill="currentColor"><path d="M1 9h2v2H1zM5 7h2v4H5zM9 5h2v6H9zM13 3h2v8h-2zM17 1h2v10h-2z"/></svg>
+      <span style="font-size:11px;">5G</span>
+      <span class="battery"><span class="lvl"></span></span>
+    </span>
+  </div>
+
+  <!-- App 容器 -->
+  <div class="app">
+    <!-- 页面水印 -->
+    <div class="watermark" id="watermark">交接班</div>
+
+    <!-- ========== 视图 1：席位 ========== -->
+    <section class="view" id="view-seats">
+      <div class="v1-body" id="seatGrid"></div>
+    </section>
+
+    <!-- ========== 视图 2：检查单模板选择 ========== -->
+    <section class="view" id="view-checklist">
+      <div class="v2-body" id="templateList"></div>
+    </section>
+
+    <!-- ========== 视图 3：交接班（逐项确认） ========== -->
+    <section class="view active" id="view-handover">
+      <div class="v2-body" id="handoverBody"></div>
+    </section>
+
+  </div>
+
+  <!-- 悬浮框组（2 个，非当前界面） -->
+  <div class="floats snap-right" id="floats"></div>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator"></div>
+
+  <!-- 单项确认弹窗 -->
+  <div class="modal-mask" id="itemModalMask" onclick="closeItemModal(event)">
+    <div class="modal" id="itemModal" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="title" id="itemModalTitle">Heading</div>
+        <span class="badge-inline" id="itemModalBadge">已确认</span>
+        <button class="close" onclick="closeItemModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="preview">
+          <svg viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="14" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M2 13l5-5 4 4 3-3 8 8"/></svg>
+        </div>
+        <div class="row"><div class="k">跑道</div><div class="v">19L / 19R（仪表着陆）</div></div>
+        <div class="row"><div class="k">说明</div><div class="v">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div></div>
+        <div class="row"><div class="k">历史</div><div class="v">
+          <div style="font-size:12px;color:var(--text-3);">
+            <div>2026-08-15 14:32 张三 确认</div>
+            <div>2026-08-15 12:10 李四 创建</div>
+          </div>
+        </div></div>
+        <div class="row" style="border:0;">
+          <div class="k">备注</div>
+          <div class="v"><textarea class="note" placeholder="可填备注（可选）"></textarea></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="closeItemModal()">取消</button>
+        <button class="btn btn-success" onclick="confirmItem()">已确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 席位切换确认弹窗 -->
+  <div class="modal-mask" id="seatModalMask" onclick="cancelSeat()">
+    <div class="modal modal-sm" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="title">⚠ 切换席位确认</div>
+      </div>
+      <div class="modal-body modal-body-confirm">
+        <p style="font-size:14px;color:var(--text-2);line-height:1.6;margin:0 0 16px;">
+          确认切换本设备为
+        </p>
+        <div class="confirm-seat-card">
+          <div class="confirm-seat-name" id="seatModalName">西塔台</div>
+          <div class="confirm-seat-role" id="seatModalRole">主+副</div>
+        </div>
+        <p style="font-size:12px;color:var(--text-3);line-height:1.5;margin:16px 0 0;">
+          确认后不会自动跳转，请手动点击悬浮框进入对应界面。
+        </p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="cancelSeat()">取消</button>
+        <button class="btn btn-primary" onclick="confirmSeat()">确认切换</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ================= 数据 ================= */
+const SEATS = [
+  { id:'wt', name:'西塔台', role:'主+副',
+    primary:{ name:'张三', initial:'张', cls:'a', dur:'1h 44m' },
+    secondary:{ name:'李四', initial:'李', cls:'b', dur:'1h 03m' } },
+  { id:'et', name:'东塔台', role:'主+副', primary:null, secondary:null },
+  { id:'fx', name:'放行', role:'单岗', primary:null },
+  { id:'lb', name:'领班', role:'单岗',
+    primary:{ name:'王五', initial:'王', cls:'c', dur:'3h 02m' } },
+  { id:'zh', name:'综合协调', role:'单岗',
+    primary:{ name:'陈七', initial:'陈', cls:'a', dur:'42m' } },
+  { id:'hd', name:'航班调度席', role:'单岗', primary:null },
+];
+
+const GROUPS = [
+  { id:'ils', label:'盲降设备', num:'1/2',
+    items:[
+      { id:'h1', title:'Heading', attach:true, desc:'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.', status:'confirmed' },
+      { id:'h2', title:'盲降19方向', desc:'盲降19方向', status:'pending' },
+    ]},
+  { id:'wx', label:'天气', num:'1/2',
+    items:[
+      { id:'w1', title:'RVR 2000', status:'confirmed' },
+      { id:'w2', title:'风向350 风速1米/秒', status:'pending' },
+    ]},
+  { id:'rwy', label:'跑道', num:'0/4',
+    items:[
+      { id:'r1', title:'单跑道', desc:'明确 √ / 异常 ×', status:'pending' },
+      { id:'r2', title:'独立离场', status:'pending' },
+      { id:'r3', title:'01L / 19R', status:'pending' },
+      { id:'r4', title:'主频 / 备频 武汉进近', status:'pending' },
+    ]},
+  { id:'eq', label:'设备', num:'0/2',
+    items:[
+      { id:'e1', title:'AWOS / ATIS 对讲机', status:'pending' },
+      { id:'e2', title:'FIPS / ADB 内话设置', status:'pending' },
+    ]},
+  { id:'mil', label:'军航', num:'0/2',
+    items:[
+      { id:'m1', title:'SP 活动 无', status:'pending' },
+      { id:'m2', title:'高度要求 / 南海北起', status:'pending' },
+    ]},
+  { id:'flow', label:'流量控制 · 通告', num:'0/3',
+    items:[
+      { id:'f1', title:'发布流控 是 / 否', status:'pending' },
+      { id:'f2', title:'航班受控 有 / 无', status:'pending' },
+      { id:'f3', title:'短时生效', status:'pending' },
+    ]},
+  { id:'dyn', label:'动态', num:'0/3',
+    items:[
+      { id:'d1', title:'进港 / 放行 / 开车 / 滑行', status:'pending' },
+      { id:'d2', title:'协调移交 / 需协调航班', status:'pending' },
+      { id:'d3', title:'相似航班号', status:'pending' },
+    ]},
+];
+
+const POOL = ['金鼎','徐万友','马莲花','李秋实','明鑫','温若春','张虎','李明','刘国莲','周犀','杜涛','张笑延','耿君岩','张文中','唐泽彬','郭永杰','姜文夫','朱永春','吴鹏','边昊','胡鑫','黄恩','叶大鹏','张宗根','王凤瑞','邓心豪','蔡昊霖','严宪','宋天霖','蓝宇航'];
+
+/* ================= 检查单模板列表（附录 A/B/C） ================= */
+const TEMPLATE_GROUPS = [
+  { id:'A', label:'附录 A · 跑道类检查单', items:[
+    { id:'a1', title:'跑道巡视检查单', icon:'🏃' },
+    { id:'a2', title:'航空器使用非全跑道离场检查单', icon:'✈' },
+    { id:'a3', title:'航空器使用非主用跑道起降检查单', icon:'✈' },
+    { id:'a4', title:'通航保障检查单', icon:'🛩' },
+    { id:'a5', title:'校验流程检查单', icon:'✓' },
+    { id:'a6', title:'训练飞行流程检查单', icon:'🎓' },
+    { id:'a7', title:'航班备降、返航检查单', icon:'↩' },
+    { id:'a8', title:'鸟情预警处置检查单', icon:'🦅' },
+    { id:'a9', title:'第三方用户飞行保障检查单', icon:'🛡' },
+    { id:'a10', title:'起降间隔检查单', icon:'⏱' },
+    { id:'a11', title:'非默认离场检查单', icon:'↗' },
+  ]},
+  { id:'B', label:'附录 B · 天气类检查单', items:[
+    { id:'b1', title:'雷雨处置检查单', icon:'⛈' },
+    { id:'b2', title:'大风天气处置检查单', icon:'💨' },
+    { id:'b3', title:'降雪除冰处置检查单', icon:'❄' },
+    { id:'b4', title:'风切变/颠簸处置检查单', icon:'〰' },
+    { id:'b5', title:'低能见度运行检查单', icon:'🌫' },
+  ]},
+  { id:'C', label:'附录 C · 设备类检查单', items:[
+    { id:'c1', title:'机场设备故障或降级检查单', icon:'⚙' },
+    { id:'c2', title:'内话设备（RS 切换到飞坤）切换检查单', icon:'🎚' },
+    { id:'c3', title:'内话设备（飞坤切换到 RS）切换检查单', icon:'🎚' },
+    { id:'c4', title:'主备自动化系统（莱斯二所）应急切换检查单', icon:'🔁' },
+    { id:'c5', title:'主备自动化系统（莱斯二所）常规切换检查单', icon:'🔁' },
+  ]},
+];
+
+/* ================= 交接班数据（来自交接班页面.js） ================= */
+/* 每个大分类：title（竖排标题）+ comp（选项组）
+   type: single=单选 / multi=多选 / text=文本项（字符串为标签） */
+const HANDOVER_GROUPS = [
+  { title:'运行模式', comp:[
+    { type:'single', items:['单跑道','相关进近','类隔离','独立离场'] },
+    { type:'single', items:['I类盲降','LVP运行'] },
+    { type:'single', items:['01L','19R','01R','19L'] },
+  ]},
+  { title:'设备', comp:[
+    { type:'multi', items:['主频','备频','复飞直通'] },
+    { type:'multi', items:['莱斯','二所','场监','进程单'] },
+    { type:'single', items:['01L','19R','01R','19L'] },
+  ]},
+  { title:'场面状况', comp:[
+    { type:'text', items:['西跑道道面状况代码'] },
+    { type:'single', items:[0,1,2,3,4,5] },
+    { type:'text', items:['东跑道道面状况代码'] },
+    { type:'text', items:[0,1,2,3,4,5] },
+    { type:'text', items:['西跑道+A滑行'] },
+  ]},
+  { title:'天气', comp:[
+    { type:'text', items:['VIS/RVR'] },
+    { type:'text', items:['QNH'] },
+    { type:'text', items:['特殊'] },
+    { type:'text', items:['风向风速'] },
+    { type:'text', items:['特殊'] },
+    { type:'text', items:['复杂天气及趋势'] },
+    { type:'text', items:['机场警报'] },
+  ]},
+  { title:'当前进近方式', comp:[] },
+  { title:'空军活动', comp:[
+    { type:'single', items:['SP活动无'] },
+    { type:'multi', items:['高度要求','南落北起','是否通报'] },
+  ]},
+  { title:'通航', comp:[
+    { type:'single', items:['申请中','活动中','无'] },
+  ]},
+  { title:'特殊', comp:[
+    { type:'multi', items:['VIP','公务机','训练','试车','非默认跑道','国际航司','无'] },
+  ]},
+  { title:'流量控制', comp:[] },
+  { title:'航行通告', comp:[] },
+  { title:'动态', comp:[
+    { type:'multi', items:['进港','放行','开车','滑行','协调移交','需协调航班','相似航班号'] },
+  ]},
+];
+
+const TABS = [
+  { id:'seats',     label:'席位',   short:'席位',   icon:'⌂' },
+  { id:'checklist', label:'检查单', short:'检查',   icon:'✓' },
+  { id:'handover',  label:'交接班', short:'交接',   icon:'⇄' },
+];
+
+let currentSeat = SEATS[0];
+let currentView = 'handover';
+
+/* ================= 渲染：席位 ================= */
+function renderSeatGrid(){
+  const wrap = document.getElementById('seatGrid');
+  // 席位界面只是选择器，不显示在班人员
+  wrap.innerHTML = SEATS.map(s => `
+    <div class="seat-card ${s.id===currentSeat.id?'selected':''}" onclick="selectSeat('${s.id}')">
+      <div class="seat-ic">${s.name.slice(0,1)}</div>
+      <div class="seat-label">${s.name}</div>
+      <div class="seat-role">${s.role}</div>
+    </div>
+  `).join('');
+}
+
+/* ================= 渲染：检查单模板选择 ================= */
+function renderChecklist(){
+  const body = document.getElementById('templateList');
+  body.innerHTML = TEMPLATE_GROUPS.map(g => `
+    <div class="group">
+      <div class="group-head">
+        <span class="label">${g.label}</span>
+        <span class="chip">${g.items.length} 项</span>
+      </div>
+      <div class="tpl-grid">
+        ${g.items.map(it => `
+          <div class="tpl-cell" onclick="selectTemplate(this)">
+            <div class="tpl-ic">${it.icon}</div>
+            <div class="tpl-title">${it.title}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+function selectTemplate(el){
+  // 假装选中：短暂高亮反馈，实际进入该检查单需后续实现
+  el.style.background = 'var(--brand-soft)';
+  el.style.borderColor = 'var(--brand)';
+  setTimeout(() => {
+    el.style.background = '';
+    el.style.borderColor = '';
+  }, 600);
+}
+
+/* ================= 渲染：交接班（竖排标题 + 单选/多选 + 语音确认） ================= */
+function renderHandover(){
+  const body = document.getElementById('handoverBody');
+  body.innerHTML = HANDOVER_GROUPS.map(g => {
+    // 组装语音确认语句：由各选项组选中项构成（空分类不渲染语音语句）
+    const parts = g.comp.map(c => {
+      if(c.type==='text') return '';
+      return (c.sel||[]).join('、');
+    }).filter(Boolean);
+    const sentence = parts.length ? '现在是' + parts.join('，') : '';
+    const voiceBlock = sentence ? `
+          <div class="voice-sentence" onmousedown="startRecord(this)" onmouseup="stopRecord(this)" onmouseleave="stopRecord(this)" ontouchstart="startRecord(this)" ontouchend="stopRecord(this)">
+            <span class="vs-text">${sentence}</span>
+            <span class="vs-hint">按住录音</span>
+          </div>` : '';
+
+    return `
+      <div class="hg" data-g="${g.title}">
+        <div class="hg-title">${g.title}</div>
+        <div class="hg-body">
+          ${g.comp.map(c => renderComp(c)).join('')}
+          ${voiceBlock}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderComp(c){
+  if(c.type==='text'){
+    // text：字符串=标签行；数字数组=可选项（类型标签不展示，仅编辑时可见）
+    const first = c.items[0];
+    if(typeof first === 'number'){
+      return `<div class="opt-row" data-type="single">
+        <div class="opt-label">道面状况代码</div>
+        <div class="opt-choices">
+          ${c.items.map(n => `<span class="chip" onclick="toggleChip(this)">${n}</span>`).join('')}
+        </div>
+      </div>`;
+    }
+    return `<div class="opt-row" data-type="text">
+      <div class="opt-label">${first}</div>
+    </div>`;
+  }
+  return `<div class="opt-row" data-type="${c.type}">
+    <div class="opt-choices">
+      ${c.items.map(it => `
+        <span class="chip" onclick="toggleChip(this)" data-group="group">${it}</span>
+      `).join('')}
+    </div>
+  </div>`;
+}
+
+/* ================= 单选/多选 chip 切换 ================= */
+function toggleChip(el){
+  const row = el.closest('.opt-row');
+  const type = row.getAttribute('data-type');
+  const isMulti = type === 'multi';
+  if(isMulti){
+    el.classList.toggle('selected');
+  } else {
+    row.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  // 重新生成该分组的语音语句
+  const gEl = el.closest('.hg');
+  if(gEl) updateSentence(gEl);
+}
+
+function updateSentence(gEl){
+  const sentenceEl = gEl.querySelector('.vs-text');
+  const parts = [];
+  gEl.querySelectorAll('.opt-row').forEach(row => {
+    if(row.getAttribute('data-type') === 'text') return; // 跳过纯标签行（无选项）
+    const sel = Array.from(row.querySelectorAll('.chip.selected')).map(c => c.textContent.trim());
+    if(sel.length) parts.push(sel.join('、'));
+  });
+  sentenceEl.textContent = parts.length ? '现在是' + parts.join('，') : '';
+}
+
+/* ================= 按住录音（原型简化：1.5s 模拟识别） ================= */
+let recordTimer = null;
+function startRecord(el){
+  el.classList.remove('ok','fail');
+  el.classList.add('recording');
+  el.querySelector('.vs-hint').textContent = '录音中…松开对比';
+  recordTimer = setTimeout(() => {
+    const ok = Math.random() > 0.25;
+    el.classList.remove('recording');
+    el.classList.add(ok?'ok':'fail');
+    el.querySelector('.vs-hint').textContent = ok ? '✓ 已确认' : '✗ 不相符';
+    // 不相符 → 该分组变琥珀色闪烁
+    const gEl = el.closest('.hg');
+    if(gEl){
+      gEl.classList.toggle('error', !ok);
+    }
+    setTimeout(() => {
+      el.classList.remove('ok','fail');
+      el.querySelector('.vs-hint').textContent = '按住录音';
+    }, 4000);
+  }, 1500);
+}
+function stopRecord(el){
+  if(recordTimer){ clearTimeout(recordTimer); recordTimer=null; }
+  if(el.classList.contains('recording')){
+    el.classList.remove('recording');
+    el.querySelector('.vs-hint').textContent = '按住录音';
+  }
+}
+
+/* ================= 悬浮框组：显示非当前的 2 个 ================= */
+function renderFloats(){
+  const wrap = document.getElementById('floats');
+  const others = TABS.filter(t => t.id !== currentView);
+  // 所有标签统一淡色样式，避免颜色误导当前页面
+  wrap.innerHTML = others.map(t => `
+    <button class="float-btn" onclick="goView('${t.id}')" title="${t.label}">
+      <span class="lbl">${t.short}</span>
+    </button>
+  `).join('');
+  initDrag();
+}
+
+/* ================= 悬浮框拖拽 + 边缘吸附 ================= */
+let dragState = null;
+function initDrag(){
+  const floats = document.getElementById('floats');
+  if(!floats) return;
+  floats.onmousedown = (e) => {
+    // 排除点击按钮自身
+    if(e.target.closest('.float-btn')) return;
+    dragState = {
+      startX: e.clientX, startY: e.clientY,
+      rect: floats.getBoundingClientRect(),
+      ipad: document.getElementById('ipad').getBoundingClientRect(),
+      moved: false,
+    };
+    // 清除当前 snap 定位，开始自由拖拽
+    floats.classList.remove('snap-right','snap-left','snap-top','snap-bottom');
+    floats.style.right = 'auto'; floats.style.left = 'auto';
+    floats.style.top = 'auto'; floats.style.bottom = 'auto';
+    floats.style.transform = 'none';
+    floats.style.position = 'absolute';
+    // 立即把 floats 放到鼠标位置
+    floats.style.left = (dragState.rect.left - dragState.ipad.left) + 'px';
+    floats.style.top  = (dragState.rect.top  - dragState.ipad.top ) + 'px';
+    floats.classList.add('dragging');
+    e.preventDefault();
+  };
+}
+document.addEventListener('mousemove', (e) => {
+  if(!dragState) return;
+  const dx = e.clientX - dragState.startX;
+  const dy = e.clientY - dragState.startY;
+  if(Math.abs(dx) > 4 || Math.abs(dy) > 4) dragState.moved = true;
+  const floats = document.getElementById('floats');
+  const newLeft = (dragState.rect.left - dragState.ipad.left) + dx;
+  const newTop  = (dragState.rect.top  - dragState.ipad.top ) + dy;
+  floats.style.left = newLeft + 'px';
+  floats.style.top  = newTop + 'px';
+});
+document.addEventListener('mouseup', (e) => {
+  if(!dragState) return;
+  const floats = document.getElementById('floats');
+  floats.classList.remove('dragging');
+  if(dragState.moved){
+    snapToEdge(floats, dragState.ipad);
+  } else {
+    // 没移动就恢复默认右吸附
+    applySnap(floats, 'snap-right');
+  }
+  dragState = null;
+});
+
+function snapToEdge(floats, ipadRect){
+  const r = floats.getBoundingClientRect();
+  // 中心点
+  const cx = r.left + r.width/2;
+  const cy = r.top  + r.height/2;
+  const distRight  = ipadRect.right  - cx;
+  const distLeft   = cx - ipadRect.left;
+  const distTop    = cy - ipadRect.top;
+  const distBottom = ipadRect.bottom - cy;
+  // 横向 vs 纵向：哪个距离更近
+  const horiz = Math.min(distLeft, distRight);
+  const vert  = Math.min(distTop,  distBottom);
+  let snap;
+  if(horiz < vert){
+    snap = distLeft < distRight ? 'snap-left' : 'snap-right';
+  } else {
+    snap = distTop < distBottom ? 'snap-top' : 'snap-bottom';
+  }
+  applySnap(floats, snap);
+}
+
+function applySnap(floats, snap){
+  floats.classList.remove('snap-right','snap-left','snap-top','snap-bottom');
+  floats.classList.add(snap);
+  // 清掉拖拽时设置的 left/top，让 snap CSS 控制位置
+  floats.style.left = ''; floats.style.top = '';
+  floats.style.right = ''; floats.style.bottom = '';
+  floats.style.transform = '';
+}
+
+/* ================= 视图切换 ================= */
+let pendingSeatId = null; // 等待用户确认的席位
+function selectSeat(id){
+  // 点击席位 → 弹确认 dialog，不自动跳转
+  pendingSeatId = id;
+  const seat = SEATS.find(s => s.id===id) || SEATS[0];
+  document.getElementById('seatModalName').textContent = seat.name;
+  document.getElementById('seatModalRole').textContent = seat.role;
+  document.getElementById('seatModalMask').classList.add('show');
+}
+function confirmSeat(){
+  if(!pendingSeatId) return;
+  currentSeat = SEATS.find(s => s.id===pendingSeatId) || SEATS[0];
+  pendingSeatId = null;
+  renderSeatGrid();
+  document.getElementById('seatModalMask').classList.remove('show');
+  // 不自动跳转，需要用户手动用悬浮框切
+}
+function cancelSeat(){
+  pendingSeatId = null;
+  document.getElementById('seatModalMask').classList.remove('show');
+}
+function goView(viewId){
+  currentView = viewId;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-'+viewId).classList.add('active');
+  // 更新水印文字
+  const wmMap = { seats:'席位选择', checklist:'检查单', handover:'交接班' };
+  document.getElementById('watermark').textContent = wmMap[viewId] || '';
+  if(viewId==='checklist') renderChecklist();
+  if(viewId==='handover') renderHandover();
+  renderFloats();
+}
+
+/* ================= 单项确认弹窗 ================= */
+function openItem(id){
+  let found=null;
+  GROUPS.forEach(g => g.items.forEach(i => { if(i.id===id) found=i; }));
+  if(!found) return;
+  document.getElementById('itemModalTitle').textContent = found.title;
+  const badge = document.getElementById('itemModalBadge');
+  badge.textContent = found.status==='confirmed'?'已确认':'待确认';
+  badge.className = 'badge-inline ' + (found.status==='confirmed'?'':'pending');
+  document.getElementById('itemModalMask').classList.add('show');
+}
+function closeItemModal(e){
+  if(e && e.target.id !== 'itemModalMask' && e.type==='click') return;
+  document.getElementById('itemModalMask').classList.remove('show');
+}
+function confirmItem(){ closeItemModal(); }
+
+/* ================= 时钟 ================= */
+function tick(){
+  const d = new Date();
+  document.getElementById('clock').textContent =
+    String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+
+/* ================= 初始化 ================= */
+renderSeatGrid();
+renderChecklist();
+renderHandover();
+renderFloats();
+tick();
+setInterval(tick, 30000);
+</script>
+</body>
+</html>
