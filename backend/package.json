@@ -1,0 +1,29 @@
+{
+  "name": "voicerec-asr",
+  "version": "1.0.0",
+  "description": "本地 ASR 服务：SenseVoice Small (sherpa-onnx) + Node.js/Express + SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "download:model": "node scripts/download-model.js",
+    "test:file": "node scripts/transcribe-file.js",
+    "test:audio": "node scripts/download-model.js --test-audio"
+  },
+  "keywords": [
+    "asr",
+    "speech-recognition",
+    "sensevoice",
+    "sherpa-onnx",
+    "express"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "sherpa-onnx-node": "^1.12.0"
+  }
+}
