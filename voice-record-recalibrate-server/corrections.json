@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "pairs": [
+    {
+      "wrong": "到动腰左",
+      "right": "道01L",
+      "fromSamples": 1,
+      "used": 2
+    },
+    {
+      "wrong": "到动摇左",
+      "right": "道01L",
+      "fromSamples": 1,
+      "used": 0
+    },
+    {
+      "wrong": "动腰左",
+      "right": "01左",
+      "used": 1
+    },
+    {
+      "wrong": "动摇锁",
+      "right": "01左"
+    },
+    {
+      "wrong": "动腰骨",
+      "right": "01左"
+    },
+    {
+      "wrong": "动腰肚",
+      "right": "01左"
+    },
+    {
+      "wrong": "动腰锁",
+      "right": "01左"
+    },
+    {
+      "wrong": "动腰骨",
+      "right": "01L",
+      "fromSamples": 2,
+      "used": 0
+    },
+    {
+      "wrong": "动腰左",
+      "right": "01L",
+      "fromSamples": 1,
+      "used": 0
+    },
+    {
+      "wrong": "动腰锁",
+      "right": "01L",
+      "fromSamples": 1,
+      "used": 0
+    },
+    {
+      "wrong": "动腰肚",
+      "right": "01L",
+      "fromSamples": 1,
+      "used": 0
+    },
+    {
+      "wrong": "动摇锁",
+      "right": "01L",
+      "fromSamples": 1,
+      "used": 0
+    },
+    {
+      "wrong": "动幺左",
+      "right": "01L",
+      "fromSamples": 2,
+      "used": 0
+    },
+    {
+      "wrong": "猛将",
+      "right": "盲降"
+    },
+    {
+      "wrong": "一轮电路",
+      "right": "低能见度",
+      "fromSamples": 1,
+      "used": 0
+    },
+    {
+      "wrong": "轮电",
+      "right": "能见",
+      "fromSamples": 1,
+      "used": 0
+    }
+  ]
+}

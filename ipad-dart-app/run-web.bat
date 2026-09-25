@@ -1,0 +1,1 @@
+flutter run -d chrome --web-browser-flag="--window-size=1440,900" --web-browser-flag="--window-position=100,50"

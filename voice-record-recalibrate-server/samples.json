@@ -1,0 +1,407 @@
+[
+  {
+    "id": "smtstuzht7z9e",
+    "time": "2026-09-08T15:31:45.329Z",
+    "timeStr": "2026/9/8 23:31:45",
+    "durationSec": 2.82,
+    "audioFile": "s_smtstuzht7z9e.wav",
+    "audioUrl": "/uploads/s_smtstuzht7z9e.wav",
+    "asrText": "动腰左动腰左",
+    "asrChecked": [],
+    "correctedText": "01L,01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T15:32:22.445Z"
+  },
+  {
+    "id": "smtstvo430mqn",
+    "time": "2026-09-08T15:32:17.235Z",
+    "timeStr": "2026/9/8 23:32:17",
+    "durationSec": 1.92,
+    "audioFile": "s_smtstvo430mqn.wav",
+    "audioUrl": "/uploads/s_smtstvo430mqn.wav",
+    "asrText": "动摇锁",
+    "asrChecked": [],
+    "correctedText": "01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T15:54:09.239Z"
+  },
+  {
+    "id": "smtsumwujcwfr",
+    "time": "2026-09-08T15:53:28.267Z",
+    "timeStr": "2026/9/8 23:53:28",
+    "durationSec": 1.5,
+    "audioFile": "s_smtsumwujcwfr.wav",
+    "audioUrl": "/uploads/s_smtsumwujcwfr.wav",
+    "asrText": "动腰骨",
+    "asrChecked": [],
+    "correctedText": "01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T15:54:08.258Z"
+  },
+  {
+    "id": "smtsun2dtkhih",
+    "time": "2026-09-08T15:53:35.441Z",
+    "timeStr": "2026/9/8 23:53:35",
+    "durationSec": 1.5,
+    "audioFile": "s_smtsun2dtkhih.wav",
+    "audioUrl": "/uploads/s_smtsun2dtkhih.wav",
+    "asrText": "动腰骨",
+    "asrChecked": [],
+    "correctedText": "01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T15:54:07.635Z"
+  },
+  {
+    "id": "smtsuqfnjrxsv",
+    "time": "2026-09-08T15:56:12.607Z",
+    "timeStr": "2026/9/8 23:56:12",
+    "durationSec": 0.96,
+    "audioFile": "s_smtsuqfnjrxsv.wav",
+    "audioUrl": "/uploads/s_smtsuqfnjrxsv.wav",
+    "asrText": "动腰肚",
+    "asrChecked": [],
+    "correctedText": "01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T15:56:25.899Z"
+  },
+  {
+    "id": "smtsuqw9flif4",
+    "time": "2026-09-08T15:56:34.131Z",
+    "timeStr": "2026/9/8 23:56:34",
+    "durationSec": 1.92,
+    "audioFile": "s_smtsuqw9flif4.wav",
+    "audioUrl": "/uploads/s_smtsuqw9flif4.wav",
+    "asrText": "动腰锁",
+    "asrChecked": [],
+    "correctedText": "01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T15:56:44.186Z"
+  },
+  {
+    "id": "smtsuran165vy",
+    "time": "2026-09-08T15:56:52.765Z",
+    "timeStr": "2026/9/8 23:56:52",
+    "durationSec": 1.68,
+    "audioFile": "s_smtsuran165vy.wav",
+    "audioUrl": "/uploads/s_smtsuran165vy.wav",
+    "asrText": "动腰左",
+    "asrChecked": [],
+    "correctedText": "01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T15:57:02.804Z"
+  },
+  {
+    "id": "smtsuxsvpdupz",
+    "time": "2026-09-08T16:01:56.341Z",
+    "timeStr": "2026/9/9 00:01:56",
+    "durationSec": 1.98,
+    "audioFile": "s_smtsuxsvpdupz.wav",
+    "audioUrl": "/uploads/s_smtsuxsvpdupz.wav",
+    "asrText": "动腰左",
+    "asrChecked": [
+      "01L"
+    ],
+    "correctedText": "01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:02:06.801Z"
+  },
+  {
+    "id": "smtsuy472iqkl",
+    "time": "2026-09-08T16:02:11.006Z",
+    "timeStr": "2026/9/9 00:02:11",
+    "durationSec": 2.34,
+    "audioFile": "s_smtsuy472iqkl.wav",
+    "audioUrl": "/uploads/s_smtsuy472iqkl.wav",
+    "asrText": "动腰左单跑道",
+    "asrChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "correctedText": "01L单跑道",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:02:17.888Z"
+  },
+  {
+    "id": "smtsuymghmopy",
+    "time": "2026-09-08T16:02:34.674Z",
+    "timeStr": "2026/9/9 00:02:34",
+    "durationSec": 2.28,
+    "audioFile": "s_smtsuymghmopy.wav",
+    "audioUrl": "/uploads/s_smtsuymghmopy.wav",
+    "asrText": "动幺左单跑道",
+    "asrChecked": [
+      "single_rw"
+    ],
+    "correctedText": "01L单跑道",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:02:43.510Z"
+  },
+  {
+    "id": "smtsuywgr94nr",
+    "time": "2026-09-08T16:02:47.643Z",
+    "timeStr": "2026/9/9 00:02:47",
+    "durationSec": 2.34,
+    "audioFile": "s_smtsuywgr94nr.wav",
+    "audioUrl": "/uploads/s_smtsuywgr94nr.wav",
+    "asrText": "动幺左单跑道",
+    "asrChecked": [
+      "single_rw"
+    ],
+    "correctedText": "01L单跑道",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:02:58.965Z"
+  },
+  {
+    "id": "smtsuzka2uuft",
+    "time": "2026-09-08T16:03:18.506Z",
+    "timeStr": "2026/9/9 00:03:18",
+    "durationSec": 2.58,
+    "audioFile": "s_smtsuzka2uuft.wav",
+    "audioUrl": "/uploads/s_smtsuzka2uuft.wav",
+    "asrText": "动幺左单跑道",
+    "asrChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "correctedText": "01L单跑道",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:03:30.898Z"
+  },
+  {
+    "id": "smtsv03t8ayed",
+    "time": "2026-09-08T16:03:43.820Z",
+    "timeStr": "2026/9/9 00:03:43",
+    "durationSec": 2.64,
+    "audioFile": "s_smtsv03t8ayed.wav",
+    "audioUrl": "/uploads/s_smtsv03t8ayed.wav",
+    "asrText": "动腰左单跑道",
+    "asrChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "correctedText": "01L单跑道",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:03:53.464Z"
+  },
+  {
+    "id": "smtsv0em9gsqz",
+    "time": "2026-09-08T16:03:57.825Z",
+    "timeStr": "2026/9/9 00:03:57",
+    "durationSec": 2.7,
+    "audioFile": "s_smtsv0em9gsqz.wav",
+    "audioUrl": "/uploads/s_smtsv0em9gsqz.wav",
+    "asrText": "单跑到动摇左",
+    "asrChecked": [],
+    "correctedText": "单跑道01L",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:04:13.529Z"
+  },
+  {
+    "id": "smtsv0u39dyu8",
+    "time": "2026-09-08T16:04:17.877Z",
+    "timeStr": "2026/9/9 00:04:17",
+    "durationSec": 2.58,
+    "audioFile": "s_smtsv0u39dyu8.wav",
+    "audioUrl": "/uploads/s_smtsv0u39dyu8.wav",
+    "asrText": "单跑到动腰左",
+    "asrChecked": [
+      "01L"
+    ],
+    "correctedText": "单跑道01L",
+    "targetChecked": [
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:04:24.051Z"
+  },
+  {
+    "id": "smtsv1c76ic4r",
+    "time": "2026-09-08T16:04:41.346Z",
+    "timeStr": "2026/9/9 00:04:41",
+    "durationSec": 1.92,
+    "audioFile": "s_smtsv1c76ic4r.wav",
+    "audioUrl": "/uploads/s_smtsv1c76ic4r.wav",
+    "asrText": "单跑到动腰左",
+    "asrChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "correctedText": "单跑道01L",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-08T16:04:57.776Z"
+  },
+  {
+    "id": "smtsv2t5b8d81",
+    "time": "2026-09-08T16:05:49.967Z",
+    "timeStr": "2026/9/9 00:05:49",
+    "durationSec": 2.52,
+    "audioFile": "s_smtsv2t5b8d81.wav",
+    "audioUrl": "/uploads/s_smtsv2t5b8d81.wav",
+    "asrText": "单跑到动腰左",
+    "asrChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "correctedText": "单跑到动腰左",
+    "targetChecked": [
+      "single_rw",
+      "01L"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-11T09:40:15.641Z"
+  },
+  {
+    "id": "smtwrl337jqkr",
+    "time": "2026-09-11T09:39:08.899Z",
+    "timeStr": "2026/9/11 17:39:08",
+    "durationSec": 2.34,
+    "audioFile": "s_smtwrl337jqkr.wav",
+    "audioUrl": "/uploads/s_smtwrl337jqkr.wav",
+    "asrText": "相关证件独立离场",
+    "asrChecked": [
+      "independent_departure"
+    ],
+    "correctedText": "相关进近,独立离场",
+    "targetChecked": [
+      "independent_departure",
+      "related_approach"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-11T09:40:14.331Z"
+  },
+  {
+    "id": "smtwrmo8zc3dd",
+    "time": "2026-09-11T09:40:22.979Z",
+    "timeStr": "2026/9/11 17:40:22",
+    "durationSec": 2.88,
+    "audioFile": "s_smtwrmo8zc3dd.wav",
+    "audioUrl": "/uploads/s_smtwrmo8zc3dd.wav",
+    "asrText": "相关禁境独立一场",
+    "asrChecked": [],
+    "correctedText": "相关进近,独立离场",
+    "targetChecked": [
+      "related_approach",
+      "independent_departure"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-11T11:36:51.477Z"
+  },
+  {
+    "id": "smtwu3wqojnpo",
+    "time": "2026-09-11T10:49:46.368Z",
+    "timeStr": "2026/9/11 18:49:46",
+    "durationSec": 2.76,
+    "audioFile": "s_smtwu3wqojnpo.wav",
+    "audioUrl": "/uploads/s_smtwu3wqojnpo.wav",
+    "asrText": "相关禁境独立离场",
+    "asrChecked": [
+      "independent_departure"
+    ],
+    "correctedText": "相关进近,独立离场",
+    "targetChecked": [
+      "independent_departure"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-11T11:36:47.615Z"
+  },
+  {
+    "id": "smtwunw3elzgs",
+    "time": "2026-09-11T11:05:18.650Z",
+    "timeStr": "2026/9/11 19:05:18",
+    "durationSec": 2.4,
+    "audioFile": "s_smtwunw3elzgs.wav",
+    "audioUrl": "/uploads/s_smtwunw3elzgs.wav",
+    "asrText": "低能见度运行",
+    "asrChecked": [
+      "lvp"
+    ],
+    "correctedText": "低能见度运行",
+    "targetChecked": [
+      "lvp"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-11T11:27:14.375Z"
+  },
+  {
+    "id": "smtwuo2q93sv0",
+    "time": "2026-09-11T11:05:27.249Z",
+    "timeStr": "2026/9/11 19:05:27",
+    "durationSec": 2.52,
+    "audioFile": "s_smtwuo2q93sv0.wav",
+    "audioUrl": "/uploads/s_smtwuo2q93sv0.wav",
+    "asrText": "一轮电路运行",
+    "asrChecked": [],
+    "correctedText": "低能见度运行",
+    "targetChecked": [],
+    "marked": true,
+    "updatedAt": "2026-09-11T11:27:10.147Z"
+  },
+  {
+    "id": "smtwuoepuxs74",
+    "time": "2026-09-11T11:05:42.786Z",
+    "timeStr": "2026/9/11 19:05:42",
+    "durationSec": 2.28,
+    "audioFile": "s_smtwuoepuxs74.wav",
+    "audioUrl": "/uploads/s_smtwuoepuxs74.wav",
+    "asrText": "低轮电度运行",
+    "asrChecked": [],
+    "correctedText": "低能见度运行",
+    "targetChecked": [
+      "lvp"
+    ],
+    "marked": true,
+    "updatedAt": "2026-09-11T11:27:16.762Z"
+  }
+]

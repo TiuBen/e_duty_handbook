@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* 设计变量（原 admin 页配色，统一到 Tailwind 主题） */
+@theme {
+  --color-line: #d9d9d9;
+  --color-page: #fafafa;
+  --color-accent: #1a73e8;
+  --color-ok: #1e8e3e;
+  --color-warn: #b26a00;
+  --color-danger: #c5221f;
+  --color-chipbg: #e6f4ea;
+  --font-sans: "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-page);
+  color: #333;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}

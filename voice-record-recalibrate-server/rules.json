@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "operation_mode",
+      "name": "运行模式",
+      "items": [
+        {
+          "id": "single_rw",
+          "label": "单跑道",
+          "keywords": [
+            "单跑道",
+            "单一跑道",
+            "单条跑道"
+          ]
+        },
+        {
+          "id": "related_approach",
+          "label": "相关进近",
+          "keywords": [
+            "相关进近",
+            "相关运行"
+          ]
+        },
+        {
+          "id": "independent_departure",
+          "label": "独立离场",
+          "keywords": [
+            "独立离场",
+            "独立起飞"
+          ]
+        },
+        {
+          "id": "cat1",
+          "label": "I类",
+          "keywords": [
+            "1类",
+            "一类",
+            "Ⅰ类",
+            "i类",
+            "cat1",
+            "cat i",
+            "一类盲降",
+            "1类盲降"
+          ]
+        },
+        {
+          "id": "lvp",
+          "label": "LVP",
+          "keywords": [
+            "lvp",
+            "低能见度运行",
+            "低能见度程序"
+          ]
+        },
+        {
+          "id": "01L",
+          "label": "01L",
+          "keywords": [
+            "01左",
+            "零一左",
+            "零1左",
+            "01l",
+            "01 l"
+          ]
+        },
+        {
+          "id": "19R",
+          "label": "19R",
+          "keywords": [
+            "19右",
+            "一九右",
+            "19r",
+            "19 r"
+          ]
+        },
+        {
+          "id": "01R",
+          "label": "01R",
+          "keywords": [
+            "01右",
+            "零一右",
+            "零1右",
+            "01r",
+            "01 r"
+          ]
+        },
+        {
+          "id": "19L",
+          "label": "19L",
+          "keywords": [
+            "19左",
+            "一九左",
+            "19l",
+            "19 l"
+          ]
+        }
+      ]
+    }
+  ]
+}
