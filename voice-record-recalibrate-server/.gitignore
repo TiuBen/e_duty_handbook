@@ -1,0 +1,20 @@
+# 依赖
+node_modules
+
+# 日志
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# 语音模型（200MB+，由 npm run download-model 生成，不入库）
+models/
+
+# ffmpeg 等本地二进制
+bin/
+
+# 样本音频（由 /api/asr 运行时生成，不入库）
+uploads/
+
+# 模型下载归档
+*.tar.bz2
