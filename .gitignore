@@ -54,3 +54,4 @@ app.*.map.json
 /App/android
 /App/build
 /App/build
+/temp/backend/node_modules
