@@ -1,0 +1,188 @@
+/* pages/workbench/index.wxss - 工作台样式 */
+.page {
+  padding-bottom: 160rpx; /* 给底部双按钮留出空间 */
+}
+
+/* 顶部 tab */
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 12rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0 0;
+  position: relative;
+}
+
+.tab-name {
+  display: inline-flex;
+  align-items: center;
+  font-size: 30rpx;
+  color: #1f2329;
+  padding-bottom: 18rpx;
+}
+
+.tab-active .tab-name {
+  font-weight: 700;
+}
+
+.tab-badge {
+  margin-left: 8rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  padding: 0 8rpx;
+  border-radius: 16rpx;
+  background: #f53f3f;
+  color: #fff;
+  font-size: 22rpx;
+}
+
+.tab-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 56rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: #f53f3f;
+}
+
+/* 搜索栏 */
+.search-row {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 16rpx 24rpx 24rpx;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f2f3f5;
+  border-radius: 8rpx;
+  padding: 14rpx 20rpx;
+}
+
+.search-icon {
+  font-size: 26rpx;
+  margin-right: 12rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1f2329;
+}
+
+.search-placeholder {
+  color: #b9bec7;
+}
+
+.search-cancel {
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  color: #1677ff;
+}
+
+/* 月/年度报告横幅 */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20rpx 24rpx;
+  padding: 20rpx 28rpx;
+  background: #fff8e6;
+  border-radius: 8rpx;
+}
+
+.banner-text {
+  font-size: 28rpx;
+  color: #e6a23c;
+  flex: 1;
+}
+
+.banner-arrow {
+  margin-left: 16rpx;
+  color: #e6a23c;
+  font-size: 32rpx;
+}
+
+/* 列表 */
+.list {
+  background: #fff;
+  margin: 0 24rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.list-item {
+  padding: 28rpx 28rpx;
+  border-bottom: 1rpx solid #f0f1f3;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.item-title {
+  font-size: 30rpx;
+  color: #1f2329;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.item-time {
+  margin-top: 14rpx;
+  font-size: 26rpx;
+  color: #8a8e99;
+}
+
+.empty {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #b9bec7;
+  font-size: 28rpx;
+}
+
+/* 底部双按钮 */
+.bottom-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: #fff;
+}
+
+.btn-simulator {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border-radius: 12rpx;
+  background: #f53f3f;
+  color: #fff;
+  font-size: 30rpx;
+  margin-right: 20rpx;
+}
+
+.btn-theory {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border-radius: 12rpx;
+  background: #23b26d;
+  color: #fff;
+  font-size: 30rpx;
+}

@@ -1,0 +1,60 @@
+/* components/picker-sheet/picker-sheet.wxss */
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+}
+
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 16rpx 16rpx 0 0;
+  overflow: hidden;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid #f0f1f3;
+}
+
+.sheet-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2329;
+}
+
+.sheet-btn {
+  font-size: 30rpx;
+  color: #8a8e99;
+}
+
+.sheet-btn.confirm {
+  color: #1677ff;
+  font-weight: 500;
+}
+
+.sheet-body {
+  max-height: 600rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.option {
+  padding: 30rpx 40rpx;
+  font-size: 30rpx;
+  color: #1f2329;
+  border-bottom: 1rpx solid #f7f8fa;
+}
+
+.option-active {
+  font-weight: 700;
+}

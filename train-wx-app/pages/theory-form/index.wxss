@@ -1,0 +1,23 @@
+/* pages/theory-form/index.wxss - 复用模拟机表单的头部样式 */
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 32rpx 0;
+}
+
+.form-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1677ff;
+}
+
+.form-close {
+  position: absolute;
+  right: 32rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40rpx;
+  color: #1677ff;
+}

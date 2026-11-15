@@ -1,0 +1,48 @@
+<!-- pages/score/index.wxml - 评分扣分页 -->
+<view class="page">
+  <!-- 分组扣分项 -->
+  <view class="groups">
+    <view wx:for="{{groups}}" wx:for-item="group" wx:for-index="gi" wx:key="name" class="group">
+      <view class="group-header" data-gi="{{gi}}" bindtap="onToggleGroup">
+        <text class="group-name">{{group.name}}</text>
+        <text class="group-arrow {{group.open ? 'open' : ''}}">∨</text>
+      </view>
+
+      <view wx:if="{{group.open}}" class="group-body">
+        <view wx:for="{{group.items}}" wx:for-item="item" wx:for-index="ii" wx:key="name" class="score-item">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-score">{{item.score}}</text>
+          <view class="item-counter">
+            <view class="counter-btn minus" data-gi="{{gi}}" data-ii="{{ii}}" bindtap="onMinus">−</view>
+            <text class="counter-num">{{item.count}}</text>
+            <view class="counter-btn plus" data-gi="{{gi}}" data-ii="{{ii}}" bindtap="onPlus">＋</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 得分与总体情况 -->
+  <view class="cell-group">
+    <view class="row"><text class="row-label">最后得分</text><text class="row-value">{{finalScore}}</text></view>
+    <view class="row"><text class="row-label">预览得分</text><text class="row-value">{{previewScore}}</text></view>
+    <view class="overall">
+      <view class="row-label">总体情况</view>
+      <textarea
+        class="overall-input"
+        placeholder="请输入总体情况"
+        placeholder-class="overall-placeholder"
+        value="{{overall}}"
+        bindinput="onOverallInput"
+        maxlength="500"
+      />
+    </view>
+    <view class="attach">
+      <text class="row-label">附件</text>
+      <view class="attach-cam" bindtap="onAddAttachment">📷</view>
+    </view>
+  </view>
+
+  <view class="btn-submit" bindtap="onSubmit">提交</view>
+  <view class="btn-prev" bindtap="onPrev">上一步</view>
+</view>

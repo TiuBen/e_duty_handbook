@@ -1,0 +1,65 @@
+<!-- pages/training-items/index.wxml - 训练项目选择 -->
+<view class="page">
+  <!-- 席位 radio 行 -->
+  <view class="pos-row">
+    <view
+      wx:for="{{positions}}"
+      wx:key="*this"
+      class="pos-item"
+      data-pos="{{item}}"
+      bindtap="onSwitchPos"
+    >
+      <view class="pos-dot {{activePos === item ? 'pos-dot-active' : ''}}"></view>
+      <text class="pos-name {{activePos === item ? 'pos-name-active' : ''}}">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮行 -->
+  <view class="action-row">
+    <view class="action-btn all" bindtap="onSelectAll">全选</view>
+    <view class="action-btn none" bindtap="onClearAll">全取消</view>
+    <view class="action-btn custom" bindtap="onAddCustom">新增个性化</view>
+    <view class="action-btn confirm" bindtap="onConfirm">确认</view>
+  </view>
+
+  <!-- 搜索 -->
+  <view class="search-row">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索"
+        placeholder-class="search-placeholder"
+        value="{{searchKey}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+    <text class="search-cancel">取消</text>
+  </view>
+
+  <!-- 分组列表 -->
+  <view class="groups">
+    <view wx:for="{{groups}}" wx:for-item="group" wx:for-index="gi" wx:key="name" class="group">
+      <view class="group-header" data-gi="{{gi}}" bindtap="onToggleGroup">
+        <text class="group-name">{{group.name}}</text>
+        <text class="group-arrow {{group.open ? 'open' : ''}}">∨</text>
+      </view>
+      <view wx:if="{{group.open}}" class="group-body">
+        <view
+          wx:for="{{group.items}}"
+          wx:for-item="item"
+          wx:key="name"
+          class="item"
+          data-name="{{item.name}}"
+          bindtap="onSelectItem"
+        >
+          <text class="item-name">{{item.name}}</text>
+          <view class="radio {{selected === item.name ? 'radio-active' : ''}}">
+            <view wx:if="{{selected === item.name}}" class="radio-inner"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{groups.length === 0}}" class="empty">当前席位下暂无匹配的训练项目</view>
+  </view>
+</view>

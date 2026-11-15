@@ -1,0 +1,10 @@
+<!-- components/form-cell/form-cell.wxml - 表单行 -->
+<view class="cell {{gray ? 'cell-gray' : ''}}">
+  <view class="cell-label">{{label}}</view>
+  <view class="cell-right">
+    <text class="cell-value {{hasValue ? (gray ? 'is-gray' : '') : 'is-placeholder'}}">
+      {{hasValue ? value : placeholder}}
+    </text>
+    <text wx:if="{{arrow}}" class="cell-arrow">›</text>
+  </view>
+</view>

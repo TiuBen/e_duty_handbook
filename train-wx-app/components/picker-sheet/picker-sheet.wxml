@@ -1,0 +1,21 @@
+<!-- components/picker-sheet/picker-sheet.wxml - 底部弹层选择器 -->
+<view wx:if="{{visible}}" class="mask" catchtap="onMaskTap">
+  <view class="sheet" catchtap="noop">
+    <view class="sheet-header">
+      <text class="sheet-btn cancel" bindtap="onCancel">取消</text>
+      <text class="sheet-title">{{title}}</text>
+      <text class="sheet-btn confirm" bindtap="onConfirm">确认</text>
+    </view>
+    <scroll-view class="sheet-body" scroll-y>
+      <view
+        wx:for="{{options}}"
+        wx:key="index"
+        class="option {{index === activeIndex ? 'option-active' : ''}}"
+        data-index="{{index}}"
+        bindtap="onTapOption"
+      >
+        {{item.label}}
+      </view>
+    </scroll-view>
+  </view>
+</view>

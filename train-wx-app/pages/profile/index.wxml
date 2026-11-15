@@ -1,0 +1,34 @@
+<!-- pages/profile/index.wxml - 个人信息 -->
+<view class="page">
+  <!-- 用户卡片 -->
+  <view class="user-card">
+    <view class="avatar">{{user.name}}</view>
+    <view class="user-info">
+      <view class="user-name">{{user.name}}</view>
+      <view class="user-role">{{user.role}} · {{user.unit}}</view>
+    </view>
+  </view>
+
+  <!-- 报告入口 -->
+  <view class="cell-group">
+    <view class="menu-item" bindtap="onGenReport">
+      <text class="menu-name">生成月/年度报告</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onMyTasks">
+      <text class="menu-name">我的任务</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="cell-group">
+    <view class="menu-item" bindtap="onGenReport">
+      <text class="menu-name">设置</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onGenReport">
+      <text class="menu-name">关于</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+</view>

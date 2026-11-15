@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "工作台",
+  "usingComponents": {
+    "form-cell": "/components/form-cell/form-cell",
+    "picker-sheet": "/components/picker-sheet/picker-sheet"
+  }
+}

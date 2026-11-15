@@ -1,0 +1,70 @@
+<!-- pages/simulator-form/index.wxml - 快速填写模拟机培训/考核 -->
+<view class="page">
+  <!-- 模态标题栏 -->
+  <view class="form-header">
+    <text class="form-title">快速填写模拟机培训/考核</text>
+    <text class="form-close" bindtap="onClose">⊗</text>
+  </view>
+
+  <view class="cell-group">
+    <view data-field="student" bindtap="onTapField">
+      <form-cell label="学员姓名" value="{{form.student}}" arrow="{{true}}" />
+    </view>
+  </view>
+
+  <!-- 红字提示 -->
+  <view class="tip-red">可通过选择培训分类筛选出对应适用范围的模拟机练习号</view>
+
+  <view class="cell-group">
+    <view data-field="exerciseNo" bindtap="onTapField">
+      <form-cell label="模拟机练习号" value="{{form.exerciseNo}}" arrow="{{true}}" />
+    </view>
+    <view data-field="trainCategory" bindtap="onTapField">
+      <form-cell label="培训分类" value="{{form.trainCategory}}" arrow="{{true}}" />
+    </view>
+    <view data-field="formName" bindtap="onTapField">
+      <form-cell label="表单名称" value="{{form.formName}}" arrow="{{true}}" />
+    </view>
+    <view data-field="qualType" bindtap="onTapField">
+      <form-cell label="资格类型" value="{{form.qualType}}" placeholder="资格类型" arrow="{{false}}" gray="{{!form.qualType}}" />
+    </view>
+    <view data-field="sector" bindtap="onTapField">
+      <form-cell label="扇区" value="{{form.sector}}" arrow="{{true}}" />
+    </view>
+    <view data-field="weather" bindtap="onTapField">
+      <form-cell label="天气情况" value="{{form.weather}}" arrow="{{true}}" />
+    </view>
+    <view data-field="military" bindtap="onTapField">
+      <form-cell label="军航活动情况" value="{{form.military}}" arrow="{{true}}" />
+    </view>
+    <view data-field="sorties" bindtap="onTapField">
+      <form-cell label="指挥架次" value="{{form.sorties}}" arrow="{{true}}" />
+    </view>
+    <view data-field="complexity" bindtap="onTapField">
+      <form-cell label="复杂程度" value="{{form.complexity}}" arrow="{{true}}" />
+    </view>
+    <view data-field="teacher" bindtap="onTapField">
+      <form-cell label="教员姓名" value="{{form.teacher}}" arrow="{{false}}" />
+    </view>
+  </view>
+
+  <view class="cell-group">
+    <form-cell label="开始时间" value="{{form.startTime}}" arrow="{{false}}" />
+    <view data-field="duration" bindtap="onTapField">
+      <form-cell label="培训时长" value="{{form.duration}}" arrow="{{true}}" />
+    </view>
+  </view>
+
+  <!-- 底部提交 -->
+  <view class="btn-primary {{submitting ? 'disabled' : ''}}" bindtap="onSubmit">下一步</view>
+
+  <!-- 底部弹层选择器 -->
+  <picker-sheet
+    visible="{{sheetVisible}}"
+    title="{{sheetTitle}}"
+    options="{{sheetOptions}}"
+    current="{{sheetCurrent}}"
+    bindconfirm="onSheetConfirm"
+    bindcancel="onSheetCancel"
+  />
+</view>

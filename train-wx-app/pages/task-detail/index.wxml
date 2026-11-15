@@ -1,0 +1,55 @@
+<!-- pages/task-detail/index.wxml - 待办任务详情 -->
+<view class="page" wx:if="{{task}}">
+  <view class="form-header">
+    <text class="form-title">待办任务</text>
+    <text class="form-close" bindtap="onClose">⊗</text>
+  </view>
+
+  <view class="cell-group">
+    <!-- 编号只读，灰字 -->
+    <form-cell label="编号" value="{{task.id}}" arrow="{{false}}" gray="{{true}}" />
+    <view data-field="student" bindtap="onTapField">
+      <form-cell label="学员姓名" value="{{task.student}}" arrow="{{true}}" />
+    </view>
+    <view data-field="trainCategory" bindtap="onTapField">
+      <form-cell label="培训分类" value="{{task.trainCategory}}" arrow="{{true}}" />
+    </view>
+    <view data-field="postTrainType" bindtap="onTapField">
+      <form-cell label="岗位培训类别" value="{{task.postTrainType}}" arrow="{{true}}" />
+    </view>
+    <view data-field="formName" bindtap="onTapField">
+      <form-cell label="表单名称" value="{{task.formName}}" arrow="{{true}}" />
+    </view>
+    <form-cell label="开始时间" value="{{task.startTime}}" arrow="{{false}}" />
+    <form-cell label="结束时间" value="{{task.endTime}}" arrow="{{false}}" gray="{{true}}" />
+    <form-cell label="资格类型" value="{{task.qualType}}" arrow="{{false}}" gray="{{true}}" />
+    <view data-field="sector" bindtap="onTapField">
+      <form-cell label="扇区" value="{{task.sector}}" arrow="{{true}}" />
+    </view>
+    <view data-field="weather" bindtap="onTapField">
+      <form-cell label="天气情况" value="{{task.weather}}" arrow="{{true}}" />
+    </view>
+    <view data-field="military" bindtap="onTapField">
+      <form-cell label="军航活动情况" value="{{task.military}}" arrow="{{true}}" />
+    </view>
+    <view data-field="sorties" bindtap="onTapField">
+      <form-cell label="指挥架次" value="{{task.sorties}}" arrow="{{false}}" />
+    </view>
+    <view data-field="complexity" bindtap="onTapField">
+      <form-cell label="复杂程度" value="{{task.complexity}}" arrow="{{true}}" />
+    </view>
+    <form-cell label="教员姓名" value="{{task.teacher}}" arrow="{{false}}" gray="{{true}}" />
+  </view>
+
+  <view class="btn-next" bindtap="onNext">下一步</view>
+  <view class="btn-delete" bindtap="onDelete">删除</view>
+
+  <picker-sheet
+    visible="{{sheetVisible}}"
+    title="{{sheetTitle}}"
+    options="{{sheetOptions}}"
+    current="{{sheetCurrent}}"
+    bindconfirm="onSheetConfirm"
+    bindcancel="onSheetCancel"
+  />
+</view>

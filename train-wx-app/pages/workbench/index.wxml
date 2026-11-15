@@ -1,0 +1,62 @@
+<!-- pages/workbench/index.wxml - 工作台 -->
+<view class="page">
+  <!-- 顶部 tab 导航 -->
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeKey === item.key ? 'tab-active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onSwitchTab"
+    >
+      <view class="tab-name">
+        {{item.name}}
+        <text wx:if="{{badges[item.key] > 0}}" class="tab-badge">{{badges[item.key]}}</text>
+      </view>
+      <view wx:if="{{activeKey === item.key}}" class="tab-line"></view>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-row">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="请输入搜索关键词"
+        placeholder-class="search-placeholder"
+        value="{{searchKey}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+    <text class="search-cancel">取消</text>
+  </view>
+
+  <!-- 月/年度报告横幅 -->
+  <view class="banner" bindtap="onTapBanner">
+    <text class="banner-text">{{banner}}</text>
+    <text class="banner-arrow">›</text>
+  </view>
+
+  <!-- 列表 -->
+  <view class="list">
+    <view
+      wx:for="{{list}}"
+      wx:key="id"
+      class="list-item"
+      data-id="{{item.id}}"
+      bindtap="onTapItem"
+    >
+      <view class="item-title">{{item.title}}</view>
+      <view class="item-time">{{item.createdAt}}</view>
+    </view>
+
+    <view wx:if="{{list.length === 0}}" class="empty">暂无内容</view>
+  </view>
+
+  <!-- 底部双按钮：仅在待办任务 tab 显示 -->
+  <view wx:if="{{activeKey === 'todo'}}" class="bottom-actions">
+    <view class="btn-simulator" bindtap="onGoSimulator">＋ 模拟机培训/考核</view>
+    <view class="btn-theory" bindtap="onGoTheory">＋ 理论培训</view>
+  </view>
+</view>

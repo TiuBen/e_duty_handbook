@@ -1,0 +1,31 @@
+/* app.wxss - 全局样式：统一底色、通用卡片与按钮基调 */
+page {
+  background: #f5f6f8;
+  font-size: 15px;
+  color: #1f2329;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 通用表单行容器 */
+.cell-group {
+  margin: 12rpx 24rpx;
+  background: #ffffff;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+/* 主色按钮（蓝） */
+.btn-primary {
+  margin: 24rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border-radius: 12rpx;
+  background: #1677ff;
+  color: #ffffff;
+  font-size: 32rpx;
+}
+
+.btn-primary.disabled {
+  opacity: 0.5;
+}
